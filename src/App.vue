@@ -127,6 +127,8 @@ const getBzResetReward = (): number => game.value.bl < 120 ? 0 : 1 * Math.pow(1.
 const getBaResetReward = (): number => game.value.bl < 240 ? 0 : 1 * Math.pow(1.02, game.value.bl - 240) * getUpgrade3Effect(game.value.bzUpgrade3)
 
 const isBcUnlocked = computed(() => game.value.bl >= 400)
+//const isBjUnlocked = computed(() => game.value.bf >= 400)
+//const isBqUnlocked = computed(() => game.value.bm >= 400)
 const isBwUnlocked = computed(() => game.value.bs >= 400)
 const getBwBonus = (): number => game.value.bw + 1
 
