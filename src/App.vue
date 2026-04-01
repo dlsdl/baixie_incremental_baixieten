@@ -95,7 +95,7 @@ const formatNumber = (num: number): string => {
 
 // 升级花费计算：升级 1-3 乘数 1.5，升级 4 乘数 10
 const getUpgradeCost = (level: number, baseCost: number, upgradeType: number): number => {
-  const multiplier = upgradeType === 4 ? 10 : 1.4
+  const multiplier = upgradeType === 4 ? 10 : 1.25
   return Math.floor(baseCost * Math.pow(multiplier, level))
 }
 
@@ -122,15 +122,23 @@ const getUpgrade3Effect = (level: number): number => {
 
 const getUpgrade4Effect = (level: number): number => 1 + Math.min(level, 9)
 const getBlBonus = (): number => game.value.bl === 0 ? 1 : Math.floor(game.value.bl * Math.pow(1.05, game.value.bl))
-const getByResetReward = (): number => game.value.bl < 40 ? 0 : 1 * Math.pow(1.04, game.value.bl - 40) * (game.value.bl - 39) * getUpgrade3Effect(game.value.bxUpgrade3)
-const getBzResetReward = (): number => game.value.bl < 120 ? 0 : 1 * Math.pow(1.03, game.value.bl - 120) * (game.value.bl - 119) * getUpgrade3Effect(game.value.byUpgrade3)
-const getBaResetReward = (): number => game.value.bl < 240 ? 0 : 1 * Math.pow(1.02, game.value.bl - 240) * (game.value.bl - 239) * getUpgrade3Effect(game.value.bzUpgrade3)
+const getByResetReward = (): number => game.value.bl < 40 ? 0 : 1 * Math.pow(1.04, game.value.bl - 40) * getUpgrade3Effect(game.value.bxUpgrade3)
+const getBzResetReward = (): number => game.value.bl < 120 ? 0 : 1 * Math.pow(1.03, game.value.bl - 120) * getUpgrade3Effect(game.value.byUpgrade3)
+const getBaResetReward = (): number => game.value.bl < 240 ? 0 : 1 * Math.pow(1.02, game.value.bl - 240) * getUpgrade3Effect(game.value.bzUpgrade3)
 
 const isBcUnlocked = computed(() => game.value.bl >= 400)
-const isBjUnlocked = computed(() => game.value.bf >= 400)
-const isBqUnlocked = computed(() => game.value.bm >= 400)
 const isBwUnlocked = computed(() => game.value.bs >= 400)
 const getBwBonus = (): number => game.value.bw + 1
+
+const autoUnlocked = (i: number): boolean => {
+  const key = `bxAuto${i}Unlocked` as keyof GameState
+  return game.value[key] as boolean
+}
+
+const autoLevel = (i: number): number => {
+  const key = `bxAuto${i}Level` as keyof GameState
+  return game.value[key] as number
+}
 
 const clickBx = () => {
   if (game.value.gameEnded) return
@@ -278,19 +286,19 @@ const upgradeBxAuto = (autoIndex: number) => {
   if (game.value.gameEnded) return
   const autoKey = `bxAuto${autoIndex}Unlocked` as keyof GameState
   const levelKey = `bxAuto${autoIndex}Level` as keyof GameState
-  const isUnlocked = game.value[autoKey] as boolean
-  const level = game.value[levelKey] as number
+  const isUnlocked = game.value[autoKey] as unknown as boolean
+  const level = game.value[levelKey] as unknown as number
   const unlockCosts = [1e4, 1e12, 1e12, 1e12, 1e8, 1e8, 1e8, 1e8]
   const unlockResources = [game.value.bx, game.value.by, game.value.bz, game.value.ba, game.value.bx, game.value.by, game.value.bz, game.value.ba]
   if (!isUnlocked) {
     if (unlockResources[autoIndex - 1] >= unlockCosts[autoIndex - 1]) {
-      game.value[autoKey] = true as any
+      ;(game.value[autoKey] as unknown as boolean) = true
     }
   } else {
     const cost = Math.floor(1e6 * Math.pow(1.2, level))
     if (game.value.bx >= cost) {
       game.value.bx -= cost
-      game.value[levelKey] = (level + 1) as any
+      ;(game.value[levelKey] as unknown as number) = level + 1
     }
   }
 }
@@ -316,7 +324,7 @@ const autoGetResetResources = () => {
   }
 }
 
-const calculateMaxPurchases = (resource: number, baseCost: number, multiplier: number, currentLevel: number, upgradeType: number): number => {
+const calculateMaxPurchases = (resource: number, baseCost: number, multiplier: number, currentLevel: number): number => {
   if (resource < baseCost * Math.pow(multiplier, currentLevel)) return 0
   const r = multiplier
   for (let i = 1; i <= 1000; i++) {
@@ -336,9 +344,9 @@ const autoBuyUpgrades = () => {
       { level: game.value.bxUpgrade4, base: 10000 }
     ]
     upgrades.forEach((upgrade, index) => {
-      const maxBuy = calculateMaxPurchases(game.value.bx, upgrade.base, 1.4, upgrade.level, index + 1)
+      const maxBuy = calculateMaxPurchases(game.value.bx, upgrade.base, 1.25, upgrade.level)
       if (maxBuy > 0) {
-        const totalCost = upgrade.base * Math.pow(1.4, upgrade.level) * (Math.pow(1.4, maxBuy) - 1) / (1.4 - 1)
+        const totalCost = upgrade.base * Math.pow(1.25, upgrade.level) * (Math.pow(1.25, maxBuy) - 1) / (1.25 - 1)
         game.value.bx -= totalCost
         switch (index) {
           case 0: game.value.bxUpgrade1 += maxBuy; break
@@ -358,9 +366,9 @@ const autoBuyUpgrades = () => {
       { level: game.value.byUpgrade4, base: 10000 }
     ]
     upgrades.forEach((upgrade, index) => {
-      const maxBuy = calculateMaxPurchases(game.value.by, upgrade.base, 1.4, upgrade.level, index + 1)
+      const maxBuy = calculateMaxPurchases(game.value.by, upgrade.base, 1.25, upgrade.level)
       if (maxBuy > 0) {
-        const totalCost = upgrade.base * Math.pow(1.4, upgrade.level) * (Math.pow(1.4, maxBuy) - 1) / (1.4 - 1)
+        const totalCost = upgrade.base * Math.pow(1.25, upgrade.level) * (Math.pow(1.25, maxBuy) - 1) / (1.25 - 1)
         game.value.by -= totalCost
         switch (index) {
           case 0: game.value.byUpgrade1 += maxBuy; break
@@ -380,9 +388,9 @@ const autoBuyUpgrades = () => {
       { level: game.value.bzUpgrade4, base: 10000 }
     ]
     upgrades.forEach((upgrade, index) => {
-      const maxBuy = calculateMaxPurchases(game.value.bz, upgrade.base, 1.4, upgrade.level, index + 1)
+      const maxBuy = calculateMaxPurchases(game.value.bz, upgrade.base, 1.25, upgrade.level)
       if (maxBuy > 0) {
-        const totalCost = upgrade.base * Math.pow(1.4, upgrade.level) * (Math.pow(1.4, maxBuy) - 1) / (1.4 - 1)
+        const totalCost = upgrade.base * Math.pow(1.25, upgrade.level) * (Math.pow(1.25, maxBuy) - 1) / (1.25 - 1)
         game.value.bz -= totalCost
         switch (index) {
           case 0: game.value.bzUpgrade1 += maxBuy; break
@@ -402,9 +410,9 @@ const autoBuyUpgrades = () => {
       { level: game.value.baUpgrade4, base: 10000 }
     ]
     upgrades.forEach((upgrade, index) => {
-      const maxBuy = calculateMaxPurchases(game.value.ba, upgrade.base, 1.4, upgrade.level, index + 1)
+      const maxBuy = calculateMaxPurchases(game.value.ba, upgrade.base, 1.25, upgrade.level)
       if (maxBuy > 0) {
-        const totalCost = upgrade.base * Math.pow(1.4, upgrade.level) * (Math.pow(1.4, maxBuy) - 1) / (1.4 - 1)
+        const totalCost = upgrade.base * Math.pow(1.25, upgrade.level) * (Math.pow(1.25, maxBuy) - 1) / (1.25 - 1)
         game.value.ba -= totalCost
         switch (index) {
           case 0: game.value.baUpgrade1 += maxBuy; break
@@ -487,7 +495,7 @@ const resetGod = () => {
   game.value.bc = 0; game.value.bd = 0; game.value.bf = 1; game.value.bg = 0; game.value.bh = 0; game.value.bi = 0
   game.value.bj = 0; game.value.bk = 0; game.value.bm = 1; game.value.bn = 0; game.value.bo = 0; game.value.bp = 0
   game.value.bq = 0; game.value.br = 0; game.value.bs = 1; game.value.bt = 0; game.value.bu = 0; game.value.bv = 0
-  Object.keys(game.value).forEach(key => { if (key.includes('Upgrade')) game.value[key as keyof GameState] = 0 as any })
+  Object.keys(game.value).forEach(key => { if (key.includes('Upgrade')) (game.value[key as keyof GameState] as unknown as number) = 0 })
   game.value.bxAuto1Unlocked = false; game.value.bxAuto2Unlocked = false; game.value.bxAuto3Unlocked = false; game.value.bxAuto4Unlocked = false
   game.value.bxAuto5Unlocked = false; game.value.bxAuto6Unlocked = false; game.value.bxAuto7Unlocked = false; game.value.bxAuto8Unlocked = false
   game.value.bxAuto1Level = 0; game.value.bxAuto2Level = 0; game.value.bxAuto3Level = 0; game.value.bxAuto4Level = 0
@@ -578,7 +586,7 @@ watch(game, () => saveGame(), { deep: true })
             升级 4: 自动点击 ×{{ formatNumber(getUpgrade4Effect(game.bxUpgrade4)) }} (Lv.{{ game.bxUpgrade4 }}/9) - 花费：{{ formatNumber(getUpgradeCost(game.bxUpgrade4, 10000, 4)) }} BX
           </button>
         </div>
-        <div class="upgrades" v-if="game.bl >= 40 | game.by > 0">
+        <div class="upgrades" v-if="game.bl >= 40 || game.by > 0">
           <h3>拝谣升级</h3>
           <button @click="upgradeBy(1)" :disabled="game.by < getUpgradeCost(game.byUpgrade1, 10, 1)" class="upgrade-btn">
             <img src="/baixie.png" alt="" class="btn-icon" />
@@ -597,7 +605,7 @@ watch(game, () => saveGame(), { deep: true })
             升级 4: 自动获得 ×{{ formatNumber(getUpgrade4Effect(game.byUpgrade4)) }} (Lv.{{ game.byUpgrade4 }}/9) - 花费：{{ formatNumber(getUpgradeCost(game.byUpgrade4, 10000, 4)) }} BY
           </button>
         </div>
-        <div class="upgrades" v-if="game.bl >= 120 | game.bz > 0">
+        <div class="upgrades" v-if="game.bl >= 120 || game.bz > 0">
           <h3>拞谤升级</h3>
           <button @click="upgradeBz(1)" :disabled="game.bz < getUpgradeCost(game.bzUpgrade1, 10, 1)" class="upgrade-btn">
             <img src="/baixie.png" alt="" class="btn-icon" />
@@ -616,7 +624,7 @@ watch(game, () => saveGame(), { deep: true })
             升级 4: 自动获得 ×{{ formatNumber(getUpgrade4Effect(game.bzUpgrade4)) }} (Lv.{{ game.bzUpgrade4 }}/9) - 花费：{{ formatNumber(getUpgradeCost(game.bzUpgrade4, 10000, 4)) }} BZ
           </button>
         </div>
-        <div class="upgrades" v-if="game.bl >= 240 | game.ba > 0">
+        <div class="upgrades" v-if="game.bl >= 240 || game.ba > 0">
           <h3>拟谥升级</h3>
           <button @click="upgradeBa(1)" :disabled="game.ba < getUpgradeCost(game.baUpgrade1, 10, 1)" class="upgrade-btn">
             <img src="/baixie.png" alt="" class="btn-icon" />
@@ -640,9 +648,9 @@ watch(game, () => saveGame(), { deep: true })
         <h2>拜谢自动化（8 种）</h2>
         <div class="auto-upgrades">
           <div v-for="i in 8" :key="i" class="auto-upgrade">
-            <button @click="upgradeBxAuto(i)" :class="{ locked: !game[`bxAuto${i}Unlocked` as keyof GameState] }" class="auto-btn">
+            <button @click="upgradeBxAuto(i)" :class="{ locked: !autoUnlocked(i) }" class="auto-btn">
               <img src="/baixie.png" alt="" class="btn-icon" />
-              <div class="auto-title">{{ game[`bxAuto${i}Unlocked` as keyof GameState] ? `自动化${i} Lv.${game[`bxAuto${i}Level` as keyof GameState]}` : `解锁自动化${i}` }}</div>
+              <div class="auto-title">{{ autoUnlocked(i) ? `自动化${i} Lv.${autoLevel(i)}` : `解锁自动化${i}` }}</div>
               <div class="auto-desc">
                 <span v-if="i===1">效果：每秒自动获得 BX 和 BE</span>
                 <span v-else-if="i===2">效果：每秒自动获得 BY</span>
@@ -654,7 +662,7 @@ watch(game, () => saveGame(), { deep: true })
                 <span v-else>效果：自动购买 BA 升级</span>
               </div>
               <div class="auto-cost">
-                花费：{{ game[`bxAuto${i}Unlocked` as keyof GameState] ? formatNumber(Math.floor(1e6 * Math.pow(1.2, game[`bxAuto${i}Level` as keyof GameState]))) : formatNumber([1e4,1e12,1e12,1e12,1e8,1e8,1e8,1e8][i-1]) }} {{ ['BX','BY','BZ','BA','BX','BY','BZ','BA'][i-1] }}
+                花费：{{ formatNumber(autoUnlocked(i) ? Math.floor(1e6 * Math.pow(1.2, autoLevel(i))) : [1e4,1e12,1e12,1e12,1e8,1e8,1e8,1e8][i-1]) }} {{ ['BX','BY','BZ','BA','BX','BY','BZ','BA'][i-1] }}
               </div>
             </button>
           </div>
