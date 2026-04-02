@@ -25,20 +25,12 @@ interface GameState {
   bw: number
   bxAuto1Unlocked: boolean; bxAuto2Unlocked: boolean; bxAuto3Unlocked: boolean; bxAuto4Unlocked: boolean
   bxAuto5Unlocked: boolean; bxAuto6Unlocked: boolean; bxAuto7Unlocked: boolean; bxAuto8Unlocked: boolean
-  bxAuto1Level: number; bxAuto2Level: number; bxAuto3Level: number; bxAuto4Level: number
-  bxAuto5Level: number; bxAuto6Level: number; bxAuto7Level: number; bxAuto8Level: number
   bcAuto1Unlocked: boolean; bcAuto2Unlocked: boolean; bcAuto3Unlocked: boolean; bcAuto4Unlocked: boolean
   bcAuto5Unlocked: boolean; bcAuto6Unlocked: boolean; bcAuto7Unlocked: boolean; bcAuto8Unlocked: boolean
-  bcAuto1Level: number; bcAuto2Level: number; bcAuto3Level: number; bcAuto4Level: number
-  bcAuto5Level: number; bcAuto6Level: number; bcAuto7Level: number; bcAuto8Level: number
   bjAuto1Unlocked: boolean; bjAuto2Unlocked: boolean; bjAuto3Unlocked: boolean; bjAuto4Unlocked: boolean
   bjAuto5Unlocked: boolean; bjAuto6Unlocked: boolean; bjAuto7Unlocked: boolean; bjAuto8Unlocked: boolean
-  bjAuto1Level: number; bjAuto2Level: number; bjAuto3Level: number; bjAuto4Level: number
-  bjAuto5Level: number; bjAuto6Level: number; bjAuto7Level: number; bjAuto8Level: number
   bqAuto1Unlocked: boolean; bqAuto2Unlocked: boolean; bqAuto3Unlocked: boolean; bqAuto4Unlocked: boolean
   bqAuto5Unlocked: boolean; bqAuto6Unlocked: boolean; bqAuto7Unlocked: boolean; bqAuto8Unlocked: boolean
-  bqAuto1Level: number; bqAuto2Level: number; bqAuto3Level: number; bqAuto4Level: number
-  bqAuto5Level: number; bqAuto6Level: number; bqAuto7Level: number; bqAuto8Level: number
   gameEnded: boolean
 }
 
@@ -66,20 +58,12 @@ const defaultSave: GameState = {
   bw: 0,
   bxAuto1Unlocked: false, bxAuto2Unlocked: false, bxAuto3Unlocked: false, bxAuto4Unlocked: false,
   bxAuto5Unlocked: false, bxAuto6Unlocked: false, bxAuto7Unlocked: false, bxAuto8Unlocked: false,
-  bxAuto1Level: 0, bxAuto2Level: 0, bxAuto3Level: 0, bxAuto4Level: 0,
-  bxAuto5Level: 0, bxAuto6Level: 0, bxAuto7Level: 0, bxAuto8Level: 0,
   bcAuto1Unlocked: false, bcAuto2Unlocked: false, bcAuto3Unlocked: false, bcAuto4Unlocked: false,
   bcAuto5Unlocked: false, bcAuto6Unlocked: false, bcAuto7Unlocked: false, bcAuto8Unlocked: false,
-  bcAuto1Level: 0, bcAuto2Level: 0, bcAuto3Level: 0, bcAuto4Level: 0,
-  bcAuto5Level: 0, bcAuto6Level: 0, bcAuto7Level: 0, bcAuto8Level: 0,
   bjAuto1Unlocked: false, bjAuto2Unlocked: false, bjAuto3Unlocked: false, bjAuto4Unlocked: false,
   bjAuto5Unlocked: false, bjAuto6Unlocked: false, bjAuto7Unlocked: false, bjAuto8Unlocked: false,
-  bjAuto1Level: 0, bjAuto2Level: 0, bjAuto3Level: 0, bjAuto4Level: 0,
-  bjAuto5Level: 0, bjAuto6Level: 0, bjAuto7Level: 0, bjAuto8Level: 0,
   bqAuto1Unlocked: false, bqAuto2Unlocked: false, bqAuto3Unlocked: false, bqAuto4Unlocked: false,
   bqAuto5Unlocked: false, bqAuto6Unlocked: false, bqAuto7Unlocked: false, bqAuto8Unlocked: false,
-  bqAuto1Level: 0, bqAuto2Level: 0, bqAuto3Level: 0, bqAuto4Level: 0,
-  bqAuto5Level: 0, bqAuto6Level: 0, bqAuto7Level: 0, bqAuto8Level: 0,
   gameEnded: false
 }
 
@@ -93,9 +77,19 @@ const formatNumber = (num: number): string => {
   return `${mantissa.toFixed(3)}e${exp}`
 }
 
+// 升级花费乘数常量
+const UPGRADE_COST_MULTIPLIER_1_3 = 1.25
+const UPGRADE_COST_MULTIPLIER_4 = 10
+
+// 升级效果乘数常量
+const UPGRADE_1_OR_2_HUNDREDS_MULTIPLIER = 10
+const UPGRADE_1_OR_2_TENS_MULTIPLIER = 2
+const UPGRADE_3_HUNDREDS_MULTIPLIER = 2
+const UPGRADE_3_TENS_MULTIPLIER = 1.2
+
 // 升级花费计算：升级 1-3 乘数 1.5，升级 4 乘数 10
 const getUpgradeCost = (level: number, baseCost: number, upgradeType: number): number => {
-  const multiplier = upgradeType === 4 ? 10 : 1.25
+  const multiplier = upgradeType === 4 ? UPGRADE_COST_MULTIPLIER_4 : UPGRADE_COST_MULTIPLIER_1_3
   return Math.floor(baseCost * Math.pow(multiplier, level))
 }
 
@@ -106,8 +100,8 @@ const getUpgrade1Or2Effect = (level: number): number => {
   let effect = 1 + level
   const hundreds = Math.floor(level / 100)
   const tens = Math.floor(level / 10)
-  effect *= Math.pow(10, hundreds)
-  effect *= Math.pow(2, tens)
+  effect *= Math.pow(UPGRADE_1_OR_2_HUNDREDS_MULTIPLIER, hundreds)
+  effect *= Math.pow(UPGRADE_1_OR_2_TENS_MULTIPLIER, tens)
   return effect
 }
 
@@ -115,16 +109,16 @@ const getUpgrade3Effect = (level: number): number => {
   let effect = 1 + level * 0.1
   const hundreds = Math.floor(level / 100)
   const tens = Math.floor(level / 10)
-  effect *= Math.pow(2, hundreds)
-  effect *= Math.pow(1.2, tens)
+  effect *= Math.pow(UPGRADE_3_HUNDREDS_MULTIPLIER, hundreds)
+  effect *= Math.pow(UPGRADE_3_TENS_MULTIPLIER, tens)
   return effect
 }
 
 const getUpgrade4Effect = (level: number): number => 1 + Math.min(level, 9)
 const getBlBonus = (): number => game.value.bl === 0 ? 1 : Math.floor(game.value.bl * Math.pow(1.05, game.value.bl))
-const getByResetReward = (): number => game.value.bl < 40 ? 0 : 1 * Math.pow(1.04, game.value.bl - 40) * getUpgrade3Effect(game.value.bxUpgrade3)
-const getBzResetReward = (): number => game.value.bl < 120 ? 0 : 1 * Math.pow(1.03, game.value.bl - 120) * getUpgrade3Effect(game.value.byUpgrade3)
-const getBaResetReward = (): number => game.value.bl < 240 ? 0 : 1 * Math.pow(1.02, game.value.bl - 240) * getUpgrade3Effect(game.value.bzUpgrade3)
+const getByResetReward = (): number => game.value.bl < 40 ? 0 : 10 * Math.pow(1.04, game.value.bl - 40) * getUpgrade3Effect(game.value.bxUpgrade3) / 10
+const getBzResetReward = (): number => game.value.bl < 120 ? 0 : 10 * Math.pow(1.03, game.value.bl - 120) * getUpgrade3Effect(game.value.byUpgrade3) / 10
+const getBaResetReward = (): number => game.value.bl < 240 ? 0 : 10 * Math.pow(1.02, game.value.bl - 240) * getUpgrade3Effect(game.value.bzUpgrade3) / 10
 
 const isBcUnlocked = computed(() => game.value.bl >= 400)
 //const isBjUnlocked = computed(() => game.value.bf >= 400)
@@ -135,11 +129,6 @@ const getBwBonus = (): number => game.value.bw + 1
 const autoUnlocked = (i: number): boolean => {
   const key = `bxAuto${i}Unlocked` as keyof GameState
   return game.value[key] as boolean
-}
-
-const autoLevel = (i: number): number => {
-  const key = `bxAuto${i}Level` as keyof GameState
-  return game.value[key] as number
 }
 
 const clickBx = () => {
@@ -287,42 +276,30 @@ const resetBa = () => {
 const upgradeBxAuto = (autoIndex: number) => {
   if (game.value.gameEnded) return
   const autoKey = `bxAuto${autoIndex}Unlocked` as keyof GameState
-  const levelKey = `bxAuto${autoIndex}Level` as keyof GameState
   const isUnlocked = game.value[autoKey] as unknown as boolean
-  const level = game.value[levelKey] as unknown as number
   const unlockCosts = [1e4, 1e12, 1e12, 1e12, 1e8, 1e8, 1e8, 1e8]
   const unlockResources = [game.value.bx, game.value.by, game.value.bz, game.value.ba, game.value.bx, game.value.by, game.value.bz, game.value.ba]
   if (!isUnlocked) {
     if (unlockResources[autoIndex - 1] >= unlockCosts[autoIndex - 1]) {
       ;(game.value[autoKey] as unknown as boolean) = true
     }
-  } else {
-    const cost = Math.floor(1e6 * Math.pow(1.2, level))
-    if (game.value.bx >= cost) {
-      game.value.bx -= cost
-      ;(game.value[levelKey] as unknown as number) = level + 1
-    }
   }
 }
 
 const autoClickBx = () => {
   if (!game.value.bxAuto1Unlocked) return
-  const clicks = 1 + game.value.bxAuto1Level
-  for (let i = 0; i < clicks; i++) clickBx()
+  clickBx()
 }
 
 const autoGetResetResources = () => {
   if (game.value.bxAuto2Unlocked) {
-    const rate = 1 + game.value.bxAuto2Level
-    game.value.by += rate * getByResetReward() * getBwBonus()
+    game.value.by += getByResetReward() * getBwBonus()
   }
   if (game.value.bxAuto3Unlocked) {
-    const rate = 1 + game.value.bxAuto3Level
-    game.value.bz += rate * getBzResetReward() * getBwBonus()
+    game.value.bz += getBzResetReward() * getBwBonus()
   }
   if (game.value.bxAuto4Unlocked) {
-    const rate = 1 + game.value.bxAuto4Level
-    game.value.ba += rate * getBaResetReward() * getBwBonus()
+    game.value.ba += getBaResetReward() * getBwBonus()
   }
 }
 
@@ -346,9 +323,9 @@ const autoBuyUpgrades = () => {
       { level: game.value.bxUpgrade4, base: 10000 }
     ]
     upgrades.forEach((upgrade, index) => {
-      const maxBuy = calculateMaxPurchases(game.value.bx, upgrade.base, 1.25, upgrade.level)
+      const maxBuy = calculateMaxPurchases(game.value.bx, upgrade.base, UPGRADE_COST_MULTIPLIER_1_3, upgrade.level)
       if (maxBuy > 0) {
-        const totalCost = upgrade.base * Math.pow(1.25, upgrade.level) * (Math.pow(1.25, maxBuy) - 1) / (1.25 - 1)
+        const totalCost = upgrade.base * Math.pow(UPGRADE_COST_MULTIPLIER_1_3, upgrade.level) * (Math.pow(UPGRADE_COST_MULTIPLIER_1_3, maxBuy) - 1) / (UPGRADE_COST_MULTIPLIER_1_3 - 1)
         game.value.bx -= totalCost
         switch (index) {
           case 0: game.value.bxUpgrade1 += maxBuy; break
@@ -368,9 +345,9 @@ const autoBuyUpgrades = () => {
       { level: game.value.byUpgrade4, base: 10000 }
     ]
     upgrades.forEach((upgrade, index) => {
-      const maxBuy = calculateMaxPurchases(game.value.by, upgrade.base, 1.25, upgrade.level)
+      const maxBuy = calculateMaxPurchases(game.value.by, upgrade.base, UPGRADE_COST_MULTIPLIER_1_3, upgrade.level)
       if (maxBuy > 0) {
-        const totalCost = upgrade.base * Math.pow(1.25, upgrade.level) * (Math.pow(1.25, maxBuy) - 1) / (1.25 - 1)
+        const totalCost = upgrade.base * Math.pow(UPGRADE_COST_MULTIPLIER_1_3, upgrade.level) * (Math.pow(UPGRADE_COST_MULTIPLIER_1_3, maxBuy) - 1) / (UPGRADE_COST_MULTIPLIER_1_3 - 1)
         game.value.by -= totalCost
         switch (index) {
           case 0: game.value.byUpgrade1 += maxBuy; break
@@ -390,9 +367,9 @@ const autoBuyUpgrades = () => {
       { level: game.value.bzUpgrade4, base: 10000 }
     ]
     upgrades.forEach((upgrade, index) => {
-      const maxBuy = calculateMaxPurchases(game.value.bz, upgrade.base, 1.25, upgrade.level)
+      const maxBuy = calculateMaxPurchases(game.value.bz, upgrade.base, UPGRADE_COST_MULTIPLIER_1_3, upgrade.level)
       if (maxBuy > 0) {
-        const totalCost = upgrade.base * Math.pow(1.25, upgrade.level) * (Math.pow(1.25, maxBuy) - 1) / (1.25 - 1)
+        const totalCost = upgrade.base * Math.pow(UPGRADE_COST_MULTIPLIER_1_3, upgrade.level) * (Math.pow(UPGRADE_COST_MULTIPLIER_1_3, maxBuy) - 1) / (UPGRADE_COST_MULTIPLIER_1_3 - 1)
         game.value.bz -= totalCost
         switch (index) {
           case 0: game.value.bzUpgrade1 += maxBuy; break
@@ -412,9 +389,9 @@ const autoBuyUpgrades = () => {
       { level: game.value.baUpgrade4, base: 10000 }
     ]
     upgrades.forEach((upgrade, index) => {
-      const maxBuy = calculateMaxPurchases(game.value.ba, upgrade.base, 1.25, upgrade.level)
+      const maxBuy = calculateMaxPurchases(game.value.ba, upgrade.base, UPGRADE_COST_MULTIPLIER_1_3, upgrade.level)
       if (maxBuy > 0) {
-        const totalCost = upgrade.base * Math.pow(1.25, upgrade.level) * (Math.pow(1.25, maxBuy) - 1) / (1.25 - 1)
+        const totalCost = upgrade.base * Math.pow(UPGRADE_COST_MULTIPLIER_1_3, upgrade.level) * (Math.pow(UPGRADE_COST_MULTIPLIER_1_3, maxBuy) - 1) / (UPGRADE_COST_MULTIPLIER_1_3 - 1)
         game.value.ba -= totalCost
         switch (index) {
           case 0: game.value.baUpgrade1 += maxBuy; break
@@ -439,7 +416,7 @@ const startGameLoop = () => {
     autoBuyUpgrades()
     autoUpgradeBl()
     if (game.value.bw >= 114514) { game.value.bw = 114514; game.value.gameEnded = true }
-  }, 1000)
+  }, 100)
   saveInterval = window.setInterval(() => saveGame(), 5000)
   const animate = () => {
     bgDecorations.value.forEach(deco => {
@@ -492,7 +469,7 @@ const hardReset = () => {
 }
 const resetGod = () => {
   if (!isBwUnlocked.value) return
-  game.value.bw += 3 * Math.pow(1.01, game.value.bs - 400)
+  game.value.bw += 3 * Math.pow(1.01, game.value.bs - 400) / 10
   game.value.bx = 0; game.value.be = 0; game.value.bl = 1; game.value.by = 0; game.value.bz = 0; game.value.ba = 0
   game.value.bc = 0; game.value.bd = 0; game.value.bf = 1; game.value.bg = 0; game.value.bh = 0; game.value.bi = 0
   game.value.bj = 0; game.value.bk = 0; game.value.bm = 1; game.value.bn = 0; game.value.bo = 0; game.value.bp = 0
@@ -500,14 +477,12 @@ const resetGod = () => {
   Object.keys(game.value).forEach(key => { if (key.includes('Upgrade')) (game.value[key as keyof GameState] as unknown as number) = 0 })
   game.value.bxAuto1Unlocked = false; game.value.bxAuto2Unlocked = false; game.value.bxAuto3Unlocked = false; game.value.bxAuto4Unlocked = false
   game.value.bxAuto5Unlocked = false; game.value.bxAuto6Unlocked = false; game.value.bxAuto7Unlocked = false; game.value.bxAuto8Unlocked = false
-  game.value.bxAuto1Level = 0; game.value.bxAuto2Level = 0; game.value.bxAuto3Level = 0; game.value.bxAuto4Level = 0
-  game.value.bxAuto5Level = 0; game.value.bxAuto6Level = 0; game.value.bxAuto7Level = 0; game.value.bxAuto8Level = 0
 }
 
 onMounted(() => {
   loadGame()
   startGameLoop()
-  for (let i = 0; i < 100; i++) {
+  for (let i = 0; i < 50; i++) {
     bgDecorations.value.push({
       id: i, x: Math.random() * 100, y: Math.random() * 100, size: 30 + Math.random() * 200,
       rotation: Math.random() * 360, speed: (Math.random() - 0.5) * 0.5, opacity: 0.3 + Math.random() * 0.3
@@ -652,19 +627,19 @@ watch(game, () => saveGame(), { deep: true })
           <div v-for="i in 8" :key="i" class="auto-upgrade">
             <button @click="upgradeBxAuto(i)" :class="{ locked: !autoUnlocked(i) }" class="auto-btn">
               <img src="/baixie.png" alt="" class="btn-icon" />
-              <div class="auto-title">{{ autoUnlocked(i) ? `自动化${i} Lv.${autoLevel(i)}` : `解锁自动化${i}` }}</div>
+              <div class="auto-title">{{ autoUnlocked(i) ? `自动化${i} 已解锁` : `解锁自动化${i}` }}</div>
               <div class="auto-desc">
-                <span v-if="i===1">效果：每秒自动获得 BX 和 BE</span>
-                <span v-else-if="i===2">效果：每秒自动获得 BY</span>
-                <span v-else-if="i===3">效果：每秒自动获得 BZ</span>
-                <span v-else-if="i===4">效果：每秒自动获得 BA</span>
+                <span v-if="i===1">效果：每 0.1 秒自动获得 BX 和 BE</span>
+                <span v-else-if="i===2">效果：每 0.1 秒自动获得 BY</span>
+                <span v-else-if="i===3">效果：每 0.1 秒自动获得 BZ</span>
+                <span v-else-if="i===4">效果：每 0.1 秒自动获得 BA</span>
                 <span v-else-if="i===5">效果：自动购买 BX 升级</span>
                 <span v-else-if="i===6">效果：自动购买 BY 升级</span>
                 <span v-else-if="i===7">效果：自动购买 BZ 升级</span>
                 <span v-else>效果：自动购买 BA 升级</span>
               </div>
-              <div class="auto-cost">
-                花费：{{ formatNumber(autoUnlocked(i) ? Math.floor(1e6 * Math.pow(1.2, autoLevel(i))) : [1e4,1e12,1e12,1e12,1e8,1e8,1e8,1e8][i-1]) }} {{ ['BX','BY','BZ','BA','BX','BY','BZ','BA'][i-1] }}
+              <div class="auto-cost" v-if="!autoUnlocked(i)">
+                花费：{{ formatNumber([1e4,1e12,1e12,1e12,1e8,1e8,1e8,1e8][i-1]) }} {{ ['BX','BY','BZ','BA','BX','BY','BZ','BA'][i-1] }}
               </div>
             </button>
           </div>
