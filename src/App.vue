@@ -70,6 +70,7 @@ const defaultSave: GameState = {
 const game = ref<GameState>({ ...defaultSave })
 
 const activeTab = ref('baixie')
+const showBgImage = ref(true)
 
 const formatNumber = (num: number): string => {
   if (num === 0) return '0'
@@ -95,7 +96,7 @@ const getUpgradeCost = (level: number, baseCost: number, upgradeType: number): n
   return Math.floor(baseCost * Math.pow(multiplier, level))
 }
 
-const getBlUpgradeCost = (bl: number): number => bl === 0 ? 1 : 50 * bl * Math.pow(1.25, bl)
+const getBlUpgradeCost = (bl: number): number => bl === 0 ? 1 : 40 * bl * Math.pow(1.25, bl)
 
 // 升级效果计算：升级 1-2 每 10 级×2 每 100 级×10，升级 3 每 10 级×1.2 每 100 级×2
 const getUpgrade1Or2Effect = (level: number): number => {
@@ -752,7 +753,7 @@ watch(game, () => saveGame(), { deep: true })
 
 <template>
   <div class="game-container">
-    <div class="bg-decorations">
+    <div class="bg-decorations" v-if="showBgImage">
       <div v-for="deco in bgDecorations" :key="deco.id" class="bg-decoration"
         :style="{ left: deco.x + '%', top: deco.y + '%', width: deco.size + 'px', height: deco.size + 'px',
           transform: `rotate(${deco.rotation}deg)`, opacity: deco.opacity }">
@@ -809,6 +810,11 @@ watch(game, () => saveGame(), { deep: true })
           @click="activeTab = 'save'" 
           class="tab-btn">
           存档系统
+        </button>
+        <button 
+          @click="showBgImage = !showBgImage" 
+          class="tab-btn">
+          {{ showBgImage ? '关闭背景' : '开启背景' }}
         </button>
       </div>
       
@@ -1168,6 +1174,37 @@ watch(game, () => saveGame(), { deep: true })
   background: transparent;
   border-radius: 15px;
   padding: 30px;
+}
+.tab-navigation {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 30px;
+  padding: 15px;
+  background: rgba(255, 215, 0, 0.2);
+  border-radius: 10px;
+  border: 2px solid rgba(255, 215, 0, 0.5);
+}
+.tab-btn {
+  padding: 10px 20px;
+  font-size: 14px;
+  background: linear-gradient(135deg, #ffd700 0%, #ffaa00 100%);
+  color: #000;
+  border: 2px solid #ffd700;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: bold;
+}
+.tab-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(255, 215, 0, 0.4);
+}
+.tab-btn.active {
+  background: linear-gradient(135deg, #ffaa00 0%, #ffd700 100%);
+  box-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
+  transform: translateY(-2px);
 }
 h1, h2, h3 {
   color: #000;
