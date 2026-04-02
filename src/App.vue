@@ -69,6 +69,8 @@ const defaultSave: GameState = {
 
 const game = ref<GameState>({ ...defaultSave })
 
+const activeTab = ref('baixie')
+
 const formatNumber = (num: number): string => {
   if (num === 0) return '0'
   if (num < 1000) return num.toFixed(1)
@@ -588,8 +590,6 @@ const autoBuyUpgrades = () => {
     upgrades.forEach((upgrade, index) => {
       const maxBuy = calculateMaxPurchases(game.value.bx, upgrade.base, UPGRADE_COST_MULTIPLIER_1_3, upgrade.level)
       if (maxBuy > 0) {
-        const cost = upgrade.base * Math.pow(UPGRADE_COST_MULTIPLIER_1_3, upgrade.level) * (Math.pow(UPGRADE_COST_MULTIPLIER_1_3, maxBuy) - 1) / (UPGRADE_COST_MULTIPLIER_1_3 - 1)
-        game.value.bx -= cost
         switch (index) {
           case 0: game.value.bxUpgrade1 += maxBuy; break
           case 1: game.value.bxUpgrade2 += maxBuy; break
@@ -610,8 +610,6 @@ const autoBuyUpgrades = () => {
     upgrades.forEach((upgrade, index) => {
       const maxBuy = calculateMaxPurchases(game.value.by, upgrade.base, UPGRADE_COST_MULTIPLIER_1_3, upgrade.level)
       if (maxBuy > 0) {
-        const cost = upgrade.base * Math.pow(UPGRADE_COST_MULTIPLIER_1_3, upgrade.level) * (Math.pow(UPGRADE_COST_MULTIPLIER_1_3, maxBuy) - 1) / (UPGRADE_COST_MULTIPLIER_1_3 - 1)
-        game.value.by -= cost
         switch (index) {
           case 0: game.value.byUpgrade1 += maxBuy; break
           case 1: game.value.byUpgrade2 += maxBuy; break
@@ -632,8 +630,6 @@ const autoBuyUpgrades = () => {
     upgrades.forEach((upgrade, index) => {
       const maxBuy = calculateMaxPurchases(game.value.bz, upgrade.base, UPGRADE_COST_MULTIPLIER_1_3, upgrade.level)
       if (maxBuy > 0) {
-        const cost = upgrade.base * Math.pow(UPGRADE_COST_MULTIPLIER_1_3, upgrade.level) * (Math.pow(UPGRADE_COST_MULTIPLIER_1_3, maxBuy) - 1) / (UPGRADE_COST_MULTIPLIER_1_3 - 1)
-        game.value.bz -= cost
         switch (index) {
           case 0: game.value.bzUpgrade1 += maxBuy; break
           case 1: game.value.bzUpgrade2 += maxBuy; break
@@ -654,8 +650,6 @@ const autoBuyUpgrades = () => {
     upgrades.forEach((upgrade, index) => {
       const maxBuy = calculateMaxPurchases(game.value.ba, upgrade.base, UPGRADE_COST_MULTIPLIER_1_3, upgrade.level)
       if (maxBuy > 0) {
-        const cost = upgrade.base * Math.pow(UPGRADE_COST_MULTIPLIER_1_3, upgrade.level) * (Math.pow(UPGRADE_COST_MULTIPLIER_1_3, maxBuy) - 1) / (UPGRADE_COST_MULTIPLIER_1_3 - 1)
-        game.value.ba -= cost
         switch (index) {
           case 0: game.value.baUpgrade1 += maxBuy; break
           case 1: game.value.baUpgrade2 += maxBuy; break
@@ -773,7 +767,53 @@ watch(game, () => saveGame(), { deep: true })
           <img src="/baixie.png" alt="" class="ending-img" v-for="i in 5" :key="i" />
         </div>
       </div>
-      <div class="section">
+      
+      <!-- 标签页导航 -->
+      <div class="tab-navigation">
+        <button 
+          :class="{ active: activeTab === 'baixie' }" 
+          @click="activeTab = 'baixie'" 
+          class="tab-btn">
+          拜谢层级
+        </button>
+        <button 
+          v-if="isBcUnlocked"
+          :class="{ active: activeTab === 'juqian' }" 
+          @click="activeTab = 'juqian'" 
+          class="tab-btn">
+          拠谦层级
+        </button>
+        <button 
+          v-if="isBjUnlocked"
+          :class="{ active: activeTab === 'jiadi' }" 
+          @click="activeTab = 'jiadi'" 
+          class="tab-btn">
+          拤谪层级
+        </button>
+        <button 
+          v-if="isBqUnlocked"
+          :class="{ active: activeTab === 'boxie' }" 
+          @click="activeTab = 'boxie'" 
+          class="tab-btn">
+          拨谮层级
+        </button>
+        <button 
+          v-if="isBwUnlocked"
+          :class="{ active: activeTab === 'god' }" 
+          @click="activeTab = 'god'" 
+          class="tab-btn">
+          拜谢之神
+        </button>
+        <button 
+          :class="{ active: activeTab === 'save' }" 
+          @click="activeTab = 'save'" 
+          class="tab-btn">
+          存档系统
+        </button>
+      </div>
+      
+      <!-- 拜谢层级标签页 -->
+      <div v-show="activeTab === 'baixie'" class="tab-content">
         <h2>拜谢层级</h2>
         <div class="resources">
           <div class="resource">拜谢：<span class="counter">{{ formatNumber(game.bx) }}</span></div>
@@ -909,8 +949,11 @@ watch(game, () => saveGame(), { deep: true })
           </div>
         </div>
       </div>
-      <div class="section" v-if="isBcUnlocked">
-        <h2>拠谦层级</h2>
+      
+      <!-- 拠谦层级标签页 -->
+      <div v-show="activeTab === 'juqian'" class="tab-content">
+        <div class="section" v-if="isBcUnlocked">
+          <h2>拠谦层级</h2>
         <div class="resources">
           <div class="resource">拠谦：<span class="counter">{{ formatNumber(game.bc) }}</span></div>
           <div class="resource">拠谦经验：<span class="counter">{{ formatNumber(game.bd) }}</span></div>
@@ -1021,52 +1064,69 @@ watch(game, () => saveGame(), { deep: true })
           </button>
         </div>
       </div>
-      <div class="section" v-if="isBjUnlocked">
-        <h2>拤谪层级</h2>
-        <div class="resources">
-          <div class="resource">拤谪：<span class="counter">{{ formatNumber(game.bj) }}</span></div>
-          <div class="resource">拤谪经验：<span class="counter">{{ formatNumber(game.bk) }}</span></div>
-          <div class="resource">拤谪等级：<span class="counter">{{ game.bm }}</span></div>
-          <div class="resource">拨谯：<span class="counter">{{ formatNumber(game.bn) }}</span></div>
-          <div class="resource">拟谯：<span class="counter">{{ formatNumber(game.bo) }}</span></div>
-          <div class="resource">设谯：<span class="counter">{{ formatNumber(game.bp) }}</span></div>
-        </div>
-        <div class="actions" v-if="isBjUnlocked">
-          <button @click="clickBj(1)" class="main-btn"><img src="/baixie.png" alt="" class="btn-icon" />拤谪一次</button>
-        </div>
       </div>
-      <div class="section" v-if="isBqUnlocked">
-        <h2>拨谮层级</h2>
-        <div class="resources">
-          <div class="resource">拨谮：<span class="counter">{{ formatNumber(game.bq) }}</span></div>
-          <div class="resource">拨谮经验：<span class="counter">{{ formatNumber(game.br) }}</span></div>
-          <div class="resource">拨谮等级：<span class="counter">{{ game.bs }}</span></div>
-          <div class="resource">设谮：<span class="counter">{{ formatNumber(game.bt) }}</span></div>
-          <div class="resource">拟谮：<span class="counter">{{ formatNumber(game.bu) }}</span></div>
-          <div class="resource">谮谯：<span class="counter">{{ formatNumber(game.bv) }}</span></div>
-        </div>
-        <div class="actions" v-if="isBqUnlocked">
-          <button @click="clickBq(1)" class="main-btn"><img src="/baixie.png" alt="" class="btn-icon" />拨谮一次</button>
-        </div>
-      </div>
-      <div class="section god-section" v-if="isBwUnlocked">
-        <h2>拜谢之神</h2>
-        <div class="god-content">
-          <img src="/baixie.png" alt="" class="god-img" />
-          <div class="god-resources">
-            <div class="resource">拜谢之神：<span class="counter">{{ formatNumber(game.bw) }}</span></div>
-            <div class="resource">全局加成：×{{ formatNumber(getBwBonus()) }}</div>
+      
+      <!-- 拤谪层级标签页 -->
+      <div v-show="activeTab === 'jiadi'" class="tab-content">
+        <div class="section" v-if="isBjUnlocked">
+          <h2>拤谪层级</h2>
+          <div class="resources">
+            <div class="resource">拤谪：<span class="counter">{{ formatNumber(game.bj) }}</span></div>
+            <div class="resource">拤谪经验：<span class="counter">{{ formatNumber(game.bk) }}</span></div>
+            <div class="resource">拤谪等级：<span class="counter">{{ game.bm }}</span></div>
+            <div class="resource">拨谯：<span class="counter">{{ formatNumber(game.bn) }}</span></div>
+            <div class="resource">拟谯：<span class="counter">{{ formatNumber(game.bo) }}</span></div>
+            <div class="resource">设谯：<span class="counter">{{ formatNumber(game.bp) }}</span></div>
           </div>
-          <button @click="resetGod" class="god-reset-btn"><img src="/baixie.png" alt="" class="btn-icon" />拜谢之神重置</button>
+          <div class="actions" v-if="isBjUnlocked">
+            <button @click="clickBj(1)" class="main-btn"><img src="/baixie.png" alt="" class="btn-icon" />拤谪一次</button>
+          </div>
         </div>
       </div>
-      <div class="section save-section">
-        <h2>存档系统</h2>
-        <div class="save-buttons">
-          <button @click="exportSave" class="save-btn"><img src="/baixie.png" alt="" class="btn-icon" />导出存档</button>
-          <label class="save-btn"><img src="/baixie.png" alt="" class="btn-icon" />导入存档<input type="file" @change="importSave" accept=".json" style="display: none" /></label>
-          <button @click="hardReset" class="reset-btn danger"><img src="/baixie.png" alt="" class="btn-icon" />硬重置</button>
-          <a href="https://www.bilibili.com/video/BV1GJ411x7h7" target="_blank" class="save-btn completion-btn"><img src="/baixie.png" alt="" class="btn-icon" />通关这个游戏</a>
+      
+      <!-- 拨谮层级标签页 -->
+      <div v-show="activeTab === 'boxie'" class="tab-content">
+        <div class="section" v-if="isBqUnlocked">
+          <h2>拨谮层级</h2>
+          <div class="resources">
+            <div class="resource">拨谮：<span class="counter">{{ formatNumber(game.bq) }}</span></div>
+            <div class="resource">拨谮经验：<span class="counter">{{ formatNumber(game.br) }}</span></div>
+            <div class="resource">拨谮等级：<span class="counter">{{ game.bs }}</span></div>
+            <div class="resource">设谮：<span class="counter">{{ formatNumber(game.bt) }}</span></div>
+            <div class="resource">拟谮：<span class="counter">{{ formatNumber(game.bu) }}</span></div>
+            <div class="resource">谮谯：<span class="counter">{{ formatNumber(game.bv) }}</span></div>
+          </div>
+          <div class="actions" v-if="isBqUnlocked">
+            <button @click="clickBq(1)" class="main-btn"><img src="/baixie.png" alt="" class="btn-icon" />拨谮一次</button>
+          </div>
+        </div>
+      </div>
+      
+      <!-- 拜谢之神标签页 -->
+      <div v-show="activeTab === 'god'" class="tab-content">
+        <div class="section god-section" v-if="isBwUnlocked">
+          <h2>拜谢之神</h2>
+          <div class="god-content">
+            <img src="/baixie.png" alt="" class="god-img" />
+            <div class="god-resources">
+              <div class="resource">拜谢之神：<span class="counter">{{ formatNumber(game.bw) }}</span></div>
+              <div class="resource">全局加成：×{{ formatNumber(getBwBonus()) }}</div>
+            </div>
+            <button @click="resetGod" class="god-reset-btn"><img src="/baixie.png" alt="" class="btn-icon" />拜谢之神重置</button>
+          </div>
+        </div>
+      </div>
+      
+      <!-- 存档系统标签页 -->
+      <div v-show="activeTab === 'save'" class="tab-content">
+        <div class="section save-section">
+          <h2>存档系统</h2>
+          <div class="save-buttons">
+            <button @click="exportSave" class="save-btn"><img src="/baixie.png" alt="" class="btn-icon" />导出存档</button>
+            <label class="save-btn"><img src="/baixie.png" alt="" class="btn-icon" />导入存档<input type="file" @change="importSave" accept=".json" style="display: none" /></label>
+            <button @click="hardReset" class="reset-btn danger"><img src="/baixie.png" alt="" class="btn-icon" />硬重置</button>
+            <a href="https://www.bilibili.com/video/BV1GJ411x7h7" target="_blank" class="save-btn completion-btn"><img src="/baixie.png" alt="" class="btn-icon" />通关这个游戏</a>
+          </div>
         </div>
       </div>
     </div>
