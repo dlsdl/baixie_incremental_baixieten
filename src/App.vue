@@ -77,7 +77,7 @@ const showBgImage = ref(true)
 
 const formatNumber = (num: number): string => {
   if (num === 0) return '0'
-  if (num === Infinity) return '<img src="/baixie.png" alt="" class="btn-icon" />'
+  if (num === Infinity) return '拜谢'
   if (num < 1000) return num.toFixed(1)
   const exp = Math.floor(Math.log10(num))
   const mantissa = num / Math.pow(10, exp)
@@ -134,17 +134,17 @@ const getLevelBonus = (level: number): number => {
 const getByResetReward = (): number => game.value.bl < 40 ? 0 : (game.value.bl / 10) * Math.pow(1.04, game.value.bl - 40) * getUpgrade3Effect(game.value.bxUpgrade3) * getLevelBonus(game.value.bf) * getBwBonus()
 const getBzResetReward = (): number => game.value.bl < 120 ? 0 : (game.value.bl / 10) * Math.pow(1.03, game.value.bl - 120) * getUpgrade3Effect(game.value.byUpgrade3) * getLevelBonus(game.value.bf) * getBwBonus()
 const getBaResetReward = (): number => game.value.bl < 240 ? 0 : (game.value.bl / 10) * Math.pow(1.02, game.value.bl - 240) * getUpgrade3Effect(game.value.bzUpgrade3) * getLevelBonus(game.value.bf) * getBwBonus()
-const getBcResetReward = (): number => game.value.bl < 400 ? 10 : (game.value.bl / 10) * Math.pow(1.01, game.value.bl - 400) * getUpgrade3Effect(game.value.baUpgrade3) * getLevelBonus(game.value.bm) * getBwBonus()
+const getBcResetReward = (): number => game.value.bl < 400 ? 0 : getUpgrade3Effect(game.value.baUpgrade3) * getLevelBonus(game.value.bm) * getBwBonus()
 
 const getBgResetReward = (): number => game.value.bf < 40 ? 0 : (game.value.bf / 10) * Math.pow(1.04, game.value.bf - 40) * getUpgrade3Effect(game.value.bcUpgrade3) * getLevelBonus(game.value.bm) * getBwBonus()
 const getBhResetReward = (): number => game.value.bf < 120 ? 0 : (game.value.bf / 10) * Math.pow(1.03, game.value.bf - 120) * getUpgrade3Effect(game.value.bgUpgrade3) * getLevelBonus(game.value.bm) * getBwBonus()
 const getBiResetReward = (): number => game.value.bf < 240 ? 0 : (game.value.bf / 10) * Math.pow(1.02, game.value.bf - 240) * getUpgrade3Effect(game.value.bhUpgrade3) * getLevelBonus(game.value.bm) * getBwBonus()
-const getBjResetReward = (): number => game.value.bf < 400 ? 10 : (game.value.bf / 10) * Math.pow(1.01, game.value.bf - 400) * getUpgrade3Effect(game.value.bjUpgrade3)* getLevelBonus(game.value.bs) * getBwBonus()
+const getBjResetReward = (): number => game.value.bf < 400 ? 0 : getUpgrade3Effect(game.value.bjUpgrade3)* getLevelBonus(game.value.bs) * getBwBonus()
 
 const getBnResetReward = (): number => game.value.bm < 40 ? 0 : (game.value.bm / 10) * Math.pow(1.04, game.value.bm - 40) * getUpgrade3Effect(game.value.bnUpgrade3) * getLevelBonus(game.value.bs) * getBwBonus()
 const getBoResetReward = (): number => game.value.bm < 120 ? 0 : (game.value.bm / 10) * Math.pow(1.03, game.value.bm - 120) * getUpgrade3Effect(game.value.boUpgrade3) * getLevelBonus(game.value.bs) * getBwBonus()
 const getBpResetReward = (): number => game.value.bm < 240 ? 0 : (game.value.bm / 10) * Math.pow(1.02, game.value.bm - 240) * getUpgrade3Effect(game.value.bpUpgrade3) * getLevelBonus(game.value.bs) * getBwBonus()
-const getBqResetReward = (): number => game.value.bm < 400 ? 10 : (game.value.bm / 10) * Math.pow(1.01, game.value.bm - 400) * getUpgrade3Effect(game.value.bpUpgrade3) * getBwBonus()
+const getBqResetReward = (): number => game.value.bm < 400 ? 0 : getUpgrade3Effect(game.value.bpUpgrade3) * getBwBonus()
 
 const getBtResetReward = (): number => game.value.bs < 40 ? 0 : (game.value.bs / 10) * Math.pow(1.04, game.value.bs - 40) * getUpgrade3Effect(game.value.bqUpgrade3) * getBwBonus()
 const getBuResetReward = (): number => game.value.bs < 120 ? 0 : (game.value.bs / 10) * Math.pow(1.03, game.value.bs - 120) * getUpgrade3Effect(game.value.btUpgrade3) * getBwBonus()
@@ -169,7 +169,7 @@ const getBeClickMultiplier = (): number => {
 }
 
 const getBcClickMultiplier = (): number => {
-  return getBcResetReward() * getUpgrade1Or2Effect(game.value.bcUpgrade1) * getUpgrade1Or2Effect(game.value.bgUpgrade1) * getUpgrade1Or2Effect(game.value.bhUpgrade1) * getUpgrade1Or2Effect(game.value.biUpgrade1) * getLevelBonus(game.value.bm)
+  return 100 * getBcResetReward() * getUpgrade1Or2Effect(game.value.bcUpgrade1) * getUpgrade1Or2Effect(game.value.bgUpgrade1) * getUpgrade1Or2Effect(game.value.bhUpgrade1) * getUpgrade1Or2Effect(game.value.biUpgrade1) * getLevelBonus(game.value.bm)
 }
 
 const getBdClickMultiplier = (): number => {
@@ -177,7 +177,7 @@ const getBdClickMultiplier = (): number => {
 }
 
 const getBjClickMultiplier = (): number => {
-  return getBjResetReward() * getUpgrade1Or2Effect(game.value.bjUpgrade1) * getUpgrade1Or2Effect(game.value.bnUpgrade1) * getUpgrade1Or2Effect(game.value.boUpgrade1) * getUpgrade1Or2Effect(game.value.bpUpgrade1) * getLevelBonus(game.value.bs)
+  return 100 * getBjResetReward() * getUpgrade1Or2Effect(game.value.bjUpgrade1) * getUpgrade1Or2Effect(game.value.bnUpgrade1) * getUpgrade1Or2Effect(game.value.boUpgrade1) * getUpgrade1Or2Effect(game.value.bpUpgrade1) * getLevelBonus(game.value.bs)
 }
  
 const getBkClickMultiplier = (): number => {
@@ -185,7 +185,7 @@ const getBkClickMultiplier = (): number => {
 }
 
 const getBqClickMultiplier = (): number => {
-  return getBqResetReward() * getUpgrade1Or2Effect(game.value.bqUpgrade1) * getUpgrade1Or2Effect(game.value.btUpgrade1) * getUpgrade1Or2Effect(game.value.buUpgrade1) * getUpgrade1Or2Effect(game.value.bvUpgrade1)
+  return 100 * getBqResetReward() * getUpgrade1Or2Effect(game.value.bqUpgrade1) * getUpgrade1Or2Effect(game.value.btUpgrade1) * getUpgrade1Or2Effect(game.value.buUpgrade1) * getUpgrade1Or2Effect(game.value.bvUpgrade1)
 }
 
 const getBrClickMultiplier = (): number => {
@@ -1789,7 +1789,7 @@ watch(() => game.value.bx, () => {
                   <span v-else-if="i===7">自动购买拢谨升级且不消耗拢谨</span>
                   <span v-else>自动购买拣谩升级且不消耗拣谩</span>
                 </div>
-                <div class="auto-cost" v-if="!(game as any)[`bcAuto${i}Unlocked`]">
+                <div class="auto-cost">
                   花费：{{ formatNumber([1e16,1e16,1e16,1e16,1e10,1e10,1e10,1e10][i-1]) }} {{ ['拠谦','拡谧','拢谨','拣漫','拠谦','拡谧','拢谨','拣谩'][i-1] }}
                 </div>
               </button>
@@ -1815,8 +1815,8 @@ watch(() => game.value.bx, () => {
           </div>
         </div>
         <span class="bonus" v-if="game.isBjUnlocked">上一层资源加成：×{{ formatNumber(getLevelBonus(game.bm)) }}</span>
-          <button @click="clickBj(1)" class="reset-btn">
-            <img src="/baixie.png" alt="" class="btn-icon" />拤谪一次(需要 400 拠谦等级)：重置之前层级除自动化外的所有内容，获得 {{ formatNumber(getBjClickMultiplier()) }} 拤谪，{{ formatNumber(getBkClickMultiplier()) }} 拤谪经验
+          <button @click="clickBj(1)" class="reset-btn" :disabled="game.bf < 400">
+            <img src="/baixie.png" alt="" class="btn-icon" />拤谪一次(需要 400 拠谦等级)：重置之前层级除自动化外的所有内容，获得 {{ formatNumber(getBjClickMultiplier()) }} 拤谪，{{ formatNumber(getBkClickMultiplier()) }} 经验
           </button>
           <button @click="resetBn" class="reset-btn" :disabled="game.bm < 40">
             <img src="/baixie.png" alt="" class="btn-icon" />拥谫重置(需要 40 拤谪等级)：重置拤谪重置的东西、拤谪和拤谪升级，获得 {{ formatNumber(getBnResetReward()) }} 拥谫
@@ -1920,7 +1920,7 @@ watch(() => game.value.bx, () => {
                   <span v-else-if="i===7">自动购买拦谬升级且不消耗拦谬</span>
                   <span v-else>自动购买拧谭升级且不消耗拧谭</span>
                 </div>
-                <div class="auto-cost" v-if="!(game as any)[`bjAuto${i}Unlocked`]">
+                <div class="auto-cost">
                   花费：{{ formatNumber([1e17,1e17,1e17,1e17,1e11,1e11,1e11,1e11][i-1]) }} {{ ['拤谪','拥谫','拦谬','拧谭','拤谪','拥谫','拦谬','拧谭'][i-1] }}
                 </div>
               </button>
@@ -1946,8 +1946,8 @@ watch(() => game.value.bx, () => {
           </div>
         </div>
         <span class="bonus" v-if="game.isBqUnlocked">上一层资源加成：×{{ formatNumber(getLevelBonus(game.bs)) }}</span>
-          <button @click="clickBq(1)" class="reset-btn">
-            <img src="/baixie.png" alt="" class="btn-icon" />拨谮一次(需要 400 拤谪等级)：重置之前层级除自动化外的所有内容，获得 {{ formatNumber(getBqClickMultiplier()) }} 拨谮，{{ formatNumber(getBrClickMultiplier()) }} 拨谮经验
+          <button @click="clickBq(1)" class="reset-btn" :disabled="game.bm < 400">
+            <img src="/baixie.png" alt="" class="btn-icon" />拨谮一次(需要 400 拤谪等级)：重置之前层级除自动化外的所有内容，获得 {{ formatNumber(getBqClickMultiplier()) }} 拨谮，{{ formatNumber(getBrClickMultiplier()) }} 经验
           </button>
           <button @click="resetBt" class="reset-btn" :disabled="game.bs < 40">
             <img src="/baixie.png" alt="" class="btn-icon" />择谯重置(需要 40 拨谮等级)：重置拨谮重置的东西、拨谮和拨谮升级，获得 {{ formatNumber(getBtResetReward()) }} 择谯
@@ -2051,7 +2051,7 @@ watch(() => game.value.bx, () => {
                   <span v-else-if="i===7">自动购买拪谰升级且不消耗拪谰</span>
                   <span v-else>自动购买拫谱升级且不消耗拫谱</span>
                 </div>
-                <div class="auto-cost" v-if="!(game as any)[`bqAuto${i}Unlocked`]">
+                <div class="auto-cost">
                   花费：{{ formatNumber([1e18,1e18,1e18,1e18,1e12,1e12,1e12,1e12][i-1]) }} {{ ['拨谮','择谯','拪谰','拫谱','拨谮','择谯','拪谰','拫谱'][i-1] }}
                 </div>
               </button>
@@ -2313,7 +2313,7 @@ h2 {
   font-weight: bold;
 }
 .auto-btn.locked {
-  background: rgba(128, 128, 128, 0.5);
+  background: rgba(255, 215, 0, 0.6);
   border-color: #888;
   color: #888;
 }
