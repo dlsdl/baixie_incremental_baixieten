@@ -153,11 +153,11 @@ const getBcResetReward = (): Decimal => game.value.bl < 400 ? D(0) : getUpgrade3
 const getBgResetReward = (): Decimal => game.value.bf < 40 ? D(0) : D(game.value.bf / 10).mul(Decimal.pow(1.04, game.value.bf - 40)).mul(getUpgrade3Effect(game.value.bcUpgrade3)).mul(getLevelBonus(game.value.bm)).mul(getBwBonus())
 const getBhResetReward = (): Decimal => game.value.bf < 120 ? D(0) : D(game.value.bf / 10).mul(Decimal.pow(1.03, game.value.bf - 120)).mul(getUpgrade3Effect(game.value.bgUpgrade3)).mul(getLevelBonus(game.value.bm)).mul(getBwBonus())
 const getBiResetReward = (): Decimal => game.value.bf < 240 ? D(0) : D(game.value.bf / 10).mul(Decimal.pow(1.02, game.value.bf - 240)).mul(getUpgrade3Effect(game.value.bhUpgrade3)).mul(getLevelBonus(game.value.bm)).mul(getBwBonus())
-const getBjResetReward = (): Decimal => game.value.bf < 400 ? D(0) : getUpgrade3Effect(game.value.bjUpgrade3).mul(getLevelBonus(game.value.bs)).mul(getBwBonus())
+const getBjResetReward = (): Decimal => game.value.bf < 400 ? D(0) : getUpgrade3Effect(game.value.biUpgrade3).mul(getLevelBonus(game.value.bs)).mul(getBwBonus())
 
-const getBnResetReward = (): Decimal => game.value.bm < 40 ? D(0) : D(game.value.bm / 10).mul(Decimal.pow(1.04, game.value.bm - 40)).mul(getUpgrade3Effect(game.value.bnUpgrade3)).mul(getLevelBonus(game.value.bs)).mul(getBwBonus())
-const getBoResetReward = (): Decimal => game.value.bm < 120 ? D(0) : D(game.value.bm / 10).mul(Decimal.pow(1.03, game.value.bm - 120)).mul(getUpgrade3Effect(game.value.boUpgrade3)).mul(getLevelBonus(game.value.bs)).mul(getBwBonus())
-const getBpResetReward = (): Decimal => game.value.bm < 240 ? D(0) : D(game.value.bm / 10).mul(Decimal.pow(1.02, game.value.bm - 240)).mul(getUpgrade3Effect(game.value.bpUpgrade3)).mul(getLevelBonus(game.value.bs)).mul(getBwBonus())
+const getBnResetReward = (): Decimal => game.value.bm < 40 ? D(0) : D(game.value.bm / 10).mul(Decimal.pow(1.04, game.value.bm - 40)).mul(getUpgrade3Effect(game.value.bjUpgrade3)).mul(getLevelBonus(game.value.bs)).mul(getBwBonus())
+const getBoResetReward = (): Decimal => game.value.bm < 120 ? D(0) : D(game.value.bm / 10).mul(Decimal.pow(1.03, game.value.bm - 120)).mul(getUpgrade3Effect(game.value.bnUpgrade3)).mul(getLevelBonus(game.value.bs)).mul(getBwBonus())
+const getBpResetReward = (): Decimal => game.value.bm < 240 ? D(0) : D(game.value.bm / 10).mul(Decimal.pow(1.02, game.value.bm - 240)).mul(getUpgrade3Effect(game.value.boUpgrade3)).mul(getLevelBonus(game.value.bs)).mul(getBwBonus())
 const getBqResetReward = (): Decimal => game.value.bm < 400 ? D(0) : getUpgrade3Effect(game.value.bpUpgrade3).mul(getBwBonus())
 
 const getBtResetReward = (): Decimal => game.value.bs < 40 ? D(0) : D(game.value.bs / 10).mul(Decimal.pow(1.04, game.value.bs - 40)).mul(getUpgrade3Effect(game.value.bqUpgrade3)).mul(getBwBonus())
@@ -757,8 +757,8 @@ const autoBuyBcUpgrades = () => {
 // 拤谪层级计算
 const clickBj = (clickMultiplier: number = 1) => {
   if (game.value.bf < 400) return
-  const bjMultiplier = getUpgrade1Or2Effect(game.value.bjUpgrade1).mul(getUpgrade1Or2Effect(game.value.btUpgrade1)).mul(getUpgrade1Or2Effect(game.value.buUpgrade1)).mul(getUpgrade1Or2Effect(game.value.bvUpgrade1)).mul(getBwBonus())
-  const bkMultiplier = getUpgrade1Or2Effect(game.value.bjUpgrade2).mul(getUpgrade1Or2Effect(game.value.btUpgrade2)).mul(getUpgrade1Or2Effect(game.value.buUpgrade2)).mul(getUpgrade1Or2Effect(game.value.bvUpgrade2)).mul(getBwBonus())
+  const bjMultiplier = D(game.value.bj.add(getBjClickMultiplier().mul(clickMultiplier)))
+  const bkMultiplier = D(game.value.bk.add(getBkClickMultiplier().mul(clickMultiplier)))
   game.value.bj = D(game.value.bj.add(bjMultiplier.mul(clickMultiplier)))
   game.value.bk = D(game.value.bk.add(bkMultiplier.mul(clickMultiplier)))
   game.value.bx = D(0); game.value.be = D(0); game.value.bl = 1; game.value.by = D(0); game.value.bz = D(0); game.value.ba = D(0)
@@ -1049,8 +1049,8 @@ const autoBuyBjUpgrades = () => {
 // 拨谮层级计算
 const clickBq = (clickMultiplier: number = 1) => {
   if (game.value.bm < 400) return
-  const bqMultiplier = getUpgrade1Or2Effect(game.value.bqUpgrade1).mul(getUpgrade1Or2Effect(game.value.btUpgrade1)).mul(getUpgrade1Or2Effect(game.value.buUpgrade1)).mul(getUpgrade1Or2Effect(game.value.bvUpgrade1)).mul(getBwBonus())
-  const brMultiplier = getUpgrade1Or2Effect(game.value.bqUpgrade2).mul(getUpgrade1Or2Effect(game.value.btUpgrade2)).mul(getUpgrade1Or2Effect(game.value.buUpgrade2)).mul(getUpgrade1Or2Effect(game.value.bvUpgrade2)).mul(getBwBonus())
+  const bqMultiplier = D(game.value.bq.add(getBqClickMultiplier().mul(clickMultiplier)))
+  const brMultiplier = D(game.value.br.add(getBrClickMultiplier().mul(clickMultiplier)))
   game.value.bq = D(game.value.bq.add(bqMultiplier.mul(clickMultiplier)))
   game.value.br = D(game.value.br.add(brMultiplier.mul(clickMultiplier)))
   game.value.bx = D(0); game.value.be = D(0); game.value.bl = 1; game.value.by = D(0); game.value.bz = D(0); game.value.ba = D(0)
