@@ -148,17 +148,17 @@ const getLevelBonus = (level: number): Decimal => {
 const getByResetReward = (): Decimal => game.value.bl < 40 ? D(0) : D(game.value.bl / 10).mul(Decimal.pow(1.04, game.value.bl - 40)).mul(getUpgrade3Effect(game.value.bxUpgrade3)).mul(getLevelBonus(game.value.bf)).mul(getBwBonus())
 const getBzResetReward = (): Decimal => game.value.bl < 120 ? D(0) : D(game.value.bl / 10).mul(Decimal.pow(1.03, game.value.bl - 120)).mul(getUpgrade3Effect(game.value.byUpgrade3)).mul(getLevelBonus(game.value.bf)).mul(getBwBonus())
 const getBaResetReward = (): Decimal => game.value.bl < 240 ? D(0) : D(game.value.bl / 10).mul(Decimal.pow(1.02, game.value.bl - 240)).mul(getUpgrade3Effect(game.value.bzUpgrade3)).mul(getLevelBonus(game.value.bf)).mul(getBwBonus())
-const getBcResetReward = (): Decimal => game.value.bl < 400 ? D(0) : D(game.value.bl-400).mul(getUpgrade3Effect(game.value.baUpgrade3)).mul(getLevelBonus(game.value.bm)).mul(getBwBonus())
+const getBcResetReward = (): Decimal => game.value.bl < 400 ? D(0) : D(game.value.bl-300).mul(getUpgrade3Effect(game.value.baUpgrade3)).mul(getLevelBonus(game.value.bm)).mul(getBwBonus())
 
 const getBgResetReward = (): Decimal => game.value.bf < 40 ? D(0) : D(game.value.bf / 10).mul(Decimal.pow(1.04, game.value.bf - 40)).mul(getUpgrade3Effect(game.value.bcUpgrade3)).mul(getLevelBonus(game.value.bm)).mul(getBwBonus())
 const getBhResetReward = (): Decimal => game.value.bf < 120 ? D(0) : D(game.value.bf / 10).mul(Decimal.pow(1.03, game.value.bf - 120)).mul(getUpgrade3Effect(game.value.bgUpgrade3)).mul(getLevelBonus(game.value.bm)).mul(getBwBonus())
 const getBiResetReward = (): Decimal => game.value.bf < 240 ? D(0) : D(game.value.bf / 10).mul(Decimal.pow(1.02, game.value.bf - 240)).mul(getUpgrade3Effect(game.value.bhUpgrade3)).mul(getLevelBonus(game.value.bm)).mul(getBwBonus())
-const getBjResetReward = (): Decimal => game.value.bf < 400 ? D(0) : D(game.value.bf-400).mul(getUpgrade3Effect(game.value.biUpgrade3)).mul(getLevelBonus(game.value.bs)).mul(getBwBonus())
+const getBjResetReward = (): Decimal => game.value.bf < 400 ? D(0) : D(game.value.bf-300).mul(getUpgrade3Effect(game.value.biUpgrade3)).mul(getLevelBonus(game.value.bs)).mul(getBwBonus())
 
 const getBnResetReward = (): Decimal => game.value.bm < 40 ? D(0) : D(game.value.bm / 10).mul(Decimal.pow(1.04, game.value.bm - 40)).mul(getUpgrade3Effect(game.value.bjUpgrade3)).mul(getLevelBonus(game.value.bs)).mul(getBwBonus())
 const getBoResetReward = (): Decimal => game.value.bm < 120 ? D(0) : D(game.value.bm / 10).mul(Decimal.pow(1.03, game.value.bm - 120)).mul(getUpgrade3Effect(game.value.bnUpgrade3)).mul(getLevelBonus(game.value.bs)).mul(getBwBonus())
 const getBpResetReward = (): Decimal => game.value.bm < 240 ? D(0) : D(game.value.bm / 10).mul(Decimal.pow(1.02, game.value.bm - 240)).mul(getUpgrade3Effect(game.value.boUpgrade3)).mul(getLevelBonus(game.value.bs)).mul(getBwBonus())
-const getBqResetReward = (): Decimal => game.value.bm < 400 ? D(0) : D(game.value.bm-400).mul(getUpgrade3Effect(game.value.bpUpgrade3)).mul(getBwBonus())
+const getBqResetReward = (): Decimal => game.value.bm < 400 ? D(0) : D(game.value.bm-300).mul(getUpgrade3Effect(game.value.bpUpgrade3)).mul(getBwBonus())
 
 const getBtResetReward = (): Decimal => game.value.bs < 40 ? D(0) : D(game.value.bs / 10).mul(Decimal.pow(1.04, game.value.bs - 40)).mul(getUpgrade3Effect(game.value.bqUpgrade3)).mul(getBwBonus())
 const getBuResetReward = (): Decimal => game.value.bs < 120 ? D(0) : D(game.value.bs / 10).mul(Decimal.pow(1.03, game.value.bs - 120)).mul(getUpgrade3Effect(game.value.btUpgrade3)).mul(getBwBonus())
@@ -1379,7 +1379,7 @@ const startGameLoop = () => {
     autoUpgradeBf()
     autoUpgradeBm()
     autoUpgradeBs()
-    if (game.value.bw.gte(114514)) { game.value.bw = D(114514); game.value.gameEnded = true }
+    if (game.value.bw.gte(Number.MAX_SAFE_INTEGER)) { game.value.bw = D(Number.MAX_SAFE_INTEGER); game.value.gameEnded = true }
   }, 100)
   saveInterval = window.setInterval(() => saveGame(), 10000)
   const animate = () => {
@@ -1891,11 +1891,11 @@ watch(() => game.value.bx, () => {
           <h3>拦谬升级</h3>
           <button @click="upgradeBo(1)" :disabled="game.bo.lt(getUpgradeCost(game.boUpgrade1, 90, 1))" class="upgrade-btn">
             <img src="/baixie.png" alt="" class="btn-icon" />
-            升级 1: 拦谬获取 ×{{ formatNumber(getUpgrade1Or2Effect(game.boUpgrade1)) }} (Lv.{{ game.boUpgrade1 }}) - 花费：{{ formatNumber(getUpgradeCost(game.boUpgrade1, 90, 1)) }} 拦谬
+            升级 1: 拤谪获取 ×{{ formatNumber(getUpgrade1Or2Effect(game.boUpgrade1)) }} (Lv.{{ game.boUpgrade1 }}) - 花费：{{ formatNumber(getUpgradeCost(game.boUpgrade1, 90, 1)) }} 拦谬
           </button>
           <button @click="upgradeBo(2)" :disabled="game.bo.lt(getUpgradeCost(game.boUpgrade2, 900, 2))" class="upgrade-btn">
             <img src="/baixie.png" alt="" class="btn-icon" />
-            升级 2: 拦谬经验获取 ×{{ formatNumber(getUpgrade1Or2Effect(game.boUpgrade2)) }} (Lv.{{ game.boUpgrade2 }}) - 花费：{{ formatNumber(getUpgradeCost(game.boUpgrade2, 900, 2)) }} 拦谬
+            升级 2: 拤谪经验获取 ×{{ formatNumber(getUpgrade1Or2Effect(game.boUpgrade2)) }} (Lv.{{ game.boUpgrade2 }}) - 花费：{{ formatNumber(getUpgradeCost(game.boUpgrade2, 900, 2)) }} 拦谬
           </button>
           <button @click="upgradeBo(3)" :disabled="game.bo.lt(getUpgradeCost(game.boUpgrade3, 9000, 3))" class="upgrade-btn">
             <img src="/baixie.png" alt="" class="btn-icon" />
@@ -1910,11 +1910,11 @@ watch(() => game.value.bx, () => {
           <h3>拧谭升级</h3>
           <button @click="upgradeBp(1)" :disabled="game.bp.lt(getUpgradeCost(game.bpUpgrade1, 90, 1))" class="upgrade-btn">
             <img src="/baixie.png" alt="" class="btn-icon" />
-            升级 1: 拧谭获取 ×{{ formatNumber(getUpgrade1Or2Effect(game.bpUpgrade1)) }} (Lv.{{ game.bpUpgrade1 }}) - 花费：{{ formatNumber(getUpgradeCost(game.bpUpgrade1, 90, 1)) }} 拧谭
+            升级 1: 拤谪获取 ×{{ formatNumber(getUpgrade1Or2Effect(game.bpUpgrade1)) }} (Lv.{{ game.bpUpgrade1 }}) - 花费：{{ formatNumber(getUpgradeCost(game.bpUpgrade1, 90, 1)) }} 拧谭
           </button>
           <button @click="upgradeBp(2)" :disabled="game.bp.lt(getUpgradeCost(game.bpUpgrade2, 900, 2))" class="upgrade-btn">
             <img src="/baixie.png" alt="" class="btn-icon" />
-            升级 2: 拧谭经验获取 ×{{ formatNumber(getUpgrade1Or2Effect(game.bpUpgrade2)) }} (Lv.{{ game.bpUpgrade2 }}) - 花费：{{ formatNumber(getUpgradeCost(game.bpUpgrade2, 900, 2)) }} 拧谭
+            升级 2: 拤谪经验获取 ×{{ formatNumber(getUpgrade1Or2Effect(game.bpUpgrade2)) }} (Lv.{{ game.bpUpgrade2 }}) - 花费：{{ formatNumber(getUpgradeCost(game.bpUpgrade2, 900, 2)) }} 拧谭
           </button>
           <button @click="upgradeBp(3)" :disabled="game.bp.lt(getUpgradeCost(game.bpUpgrade3, 9000, 3))" class="upgrade-btn">
             <img src="/baixie.png" alt="" class="btn-icon" />
@@ -1975,10 +1975,10 @@ watch(() => game.value.bx, () => {
             <img src="/baixie.png" alt="" class="btn-icon" />择谯重置(需要 40 拨谮等级)：重置拨谮重置的东西、拨谮和拨谮升级，获得 {{ formatNumber(getBtResetReward()) }} 择谯
           </button>
           <button @click="resetBu" class="reset-btn" :disabled="game.bs < 120">
-            <img src="/baixie.png" alt="" class="btn-icon" />拪谰重置(需要 )：获得 {{ formatNumber(getBuResetReward()) }}
+            <img src="/baixie.png" alt="" class="btn-icon" />拪谰重置(需要 120 拨谮等级)：重置择谯重置的东西、择谯和择谯升级，获得 {{ formatNumber(getBuResetReward()) }} 拪谰
           </button>
           <button @click="resetBv" class="reset-btn" :disabled="game.bs < 240">
-            <img src="/baixie.png" alt="" class="btn-icon" />拫谱重置 (获得 {{ formatNumber(getBvResetReward()) }}
+            <img src="/baixie.png" alt="" class="btn-icon" />拫谱重置(需要 240 拨谮等级)：重置拪谰重置的东西、拪谰和拪谰升级，获得  {{ formatNumber(getBvResetReward()) }} 拫谱
           </button>
         <div class="upgrades" v-if="game.isBqUnlocked">
           <h3>拨谮升级</h3>
@@ -2110,7 +2110,7 @@ watch(() => game.value.bx, () => {
             <label class="save-btn"><img src="/baixie.png" alt="" class="btn-icon" />导入存档<input type="file" @change="importSave" accept=".txt" style="display: none" /></label>
             <button @click="hardReset" class="reset-btn danger"><img src="/baixie.png" alt="" class="btn-icon" />硬重置</button>
             <!--a href="https://www.bilibili.com/video/BV1GJ411x7h7" target="_blank" class="save-btn completion-btn"><img src="/baixie.png" alt="" class="btn-icon" />通关这个游戏</a-->
-          <span class="bonus">游戏说明：所有的升级1和2每10级效果乘以2，每100级效果乘以10。所有的升级3每10级效果乘以1.414，每100级效果乘以3.162。当前层级的等级到达400解锁下一层级。</span>
+          <span class="bonus">游戏说明：所有的升级1和2每10级效果乘以2，每100级效果乘以10。所有的升级3每10级效果乘以1.414，每100级效果乘以3.162。当前层级的等级到达400解锁下一层级。游戏结局：获得9007199254740991？？。</span>
           </div>
         </div>
       </div>
