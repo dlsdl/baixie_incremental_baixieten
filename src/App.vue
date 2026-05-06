@@ -148,17 +148,17 @@ const getLevelBonus = (level: number): Decimal => {
 const getByResetReward = (): Decimal => game.value.bl < 40 ? D(0) : D(game.value.bl / 10).mul(Decimal.pow(1.04, game.value.bl - 40)).mul(getUpgrade3Effect(game.value.bxUpgrade3)).mul(getLevelBonus(game.value.bf)).mul(getBwBonus())
 const getBzResetReward = (): Decimal => game.value.bl < 120 ? D(0) : D(game.value.bl / 10).mul(Decimal.pow(1.03, game.value.bl - 120)).mul(getUpgrade3Effect(game.value.byUpgrade3)).mul(getLevelBonus(game.value.bf)).mul(getBwBonus())
 const getBaResetReward = (): Decimal => game.value.bl < 240 ? D(0) : D(game.value.bl / 10).mul(Decimal.pow(1.02, game.value.bl - 240)).mul(getUpgrade3Effect(game.value.bzUpgrade3)).mul(getLevelBonus(game.value.bf)).mul(getBwBonus())
-const getBcResetReward = (): Decimal => game.value.bl < 400 ? D(0) : D(game.value.bl / 100).mul(Decimal.pow(1.01, game.value.bl - 400)).mul(getUpgrade3Effect(game.value.baUpgrade3)).mul(getLevelBonus(game.value.bm)).mul(getBwBonus())
+const getBcResetReward = (): Decimal => game.value.bl < 400 ? D(0) : D(game.value.bl-400).mul(getUpgrade3Effect(game.value.baUpgrade3)).mul(getLevelBonus(game.value.bm)).mul(getBwBonus())
 
 const getBgResetReward = (): Decimal => game.value.bf < 40 ? D(0) : D(game.value.bf / 10).mul(Decimal.pow(1.04, game.value.bf - 40)).mul(getUpgrade3Effect(game.value.bcUpgrade3)).mul(getLevelBonus(game.value.bm)).mul(getBwBonus())
 const getBhResetReward = (): Decimal => game.value.bf < 120 ? D(0) : D(game.value.bf / 10).mul(Decimal.pow(1.03, game.value.bf - 120)).mul(getUpgrade3Effect(game.value.bgUpgrade3)).mul(getLevelBonus(game.value.bm)).mul(getBwBonus())
 const getBiResetReward = (): Decimal => game.value.bf < 240 ? D(0) : D(game.value.bf / 10).mul(Decimal.pow(1.02, game.value.bf - 240)).mul(getUpgrade3Effect(game.value.bhUpgrade3)).mul(getLevelBonus(game.value.bm)).mul(getBwBonus())
-const getBjResetReward = (): Decimal => game.value.bf < 400 ? D(0) : D(game.value.bf / 100).mul(Decimal.pow(1.01, game.value.bf - 400)).mul(getUpgrade3Effect(game.value.biUpgrade3)).mul(getLevelBonus(game.value.bs)).mul(getBwBonus())
+const getBjResetReward = (): Decimal => game.value.bf < 400 ? D(0) : D(game.value.bf-400).mul(getUpgrade3Effect(game.value.biUpgrade3)).mul(getLevelBonus(game.value.bs)).mul(getBwBonus())
 
 const getBnResetReward = (): Decimal => game.value.bm < 40 ? D(0) : D(game.value.bm / 10).mul(Decimal.pow(1.04, game.value.bm - 40)).mul(getUpgrade3Effect(game.value.bjUpgrade3)).mul(getLevelBonus(game.value.bs)).mul(getBwBonus())
 const getBoResetReward = (): Decimal => game.value.bm < 120 ? D(0) : D(game.value.bm / 10).mul(Decimal.pow(1.03, game.value.bm - 120)).mul(getUpgrade3Effect(game.value.bnUpgrade3)).mul(getLevelBonus(game.value.bs)).mul(getBwBonus())
 const getBpResetReward = (): Decimal => game.value.bm < 240 ? D(0) : D(game.value.bm / 10).mul(Decimal.pow(1.02, game.value.bm - 240)).mul(getUpgrade3Effect(game.value.boUpgrade3)).mul(getLevelBonus(game.value.bs)).mul(getBwBonus())
-const getBqResetReward = (): Decimal => game.value.bm < 400 ? D(0) : D(game.value.bm / 100).mul(Decimal.pow(1.01, game.value.bm - 400)).mul(getUpgrade3Effect(game.value.bpUpgrade3)).mul(getBwBonus())
+const getBqResetReward = (): Decimal => game.value.bm < 400 ? D(0) : D(game.value.bm-400).mul(getUpgrade3Effect(game.value.bpUpgrade3)).mul(getBwBonus())
 
 const getBtResetReward = (): Decimal => game.value.bs < 40 ? D(0) : D(game.value.bs / 10).mul(Decimal.pow(1.04, game.value.bs - 40)).mul(getUpgrade3Effect(game.value.bqUpgrade3)).mul(getBwBonus())
 const getBuResetReward = (): Decimal => game.value.bs < 120 ? D(0) : D(game.value.bs / 10).mul(Decimal.pow(1.03, game.value.bs - 120)).mul(getUpgrade3Effect(game.value.btUpgrade3)).mul(getBwBonus())
@@ -1787,7 +1787,7 @@ watch(() => game.value.bx, () => {
           </button>
           <button @click="upgradeBi(3)" :disabled="game.bi.lt(getUpgradeCost(game.biUpgrade3, 3000, 3))" class="upgrade-btn">
             <img src="/baixie.png" alt="" class="btn-icon" />
-            升级 3: 拣谩获取 ×{{ formatNumber(getUpgrade3Effect(game.biUpgrade3)) }} (Lv.{{ game.biUpgrade3 }}) - 花费：{{ formatNumber(getUpgradeCost(game.biUpgrade3, 3000, 3)) }} 拣谩
+            升级 3: 拤谪获取 ×{{ formatNumber(getUpgrade3Effect(game.biUpgrade3)) }} (Lv.{{ game.biUpgrade3 }}) - 花费：{{ formatNumber(getUpgradeCost(game.biUpgrade3, 3000, 3)) }} 拣谩
           </button>
           <button @click="upgradeBi(4)" :disabled="game.bi.lt(getUpgradeCost(game.biUpgrade4, 30000, 4))|| game.biUpgrade4 >= 9" class="upgrade-btn">
             <img src="/baixie.png" alt="" class="btn-icon" />
@@ -1872,19 +1872,19 @@ watch(() => game.value.bx, () => {
           <h3>拥谫升级</h3>
           <button @click="upgradeBn(1)" :disabled="game.bn.lt(getUpgradeCost(game.bnUpgrade1, 90, 1))" class="upgrade-btn">
             <img src="/baixie.png" alt="" class="btn-icon" />
-            升级 1: 拤谪获取 ×{{ formatNumber(getUpgrade1Or2Effect(game.bnUpgrade1)) }} (Lv.{{ game.bnUpgrade1 }}) - 花费：{{ formatNumber(getUpgradeCost(game.bnUpgrade1, 90, 1)) }} 拣谩
+            升级 1: 拤谪获取 ×{{ formatNumber(getUpgrade1Or2Effect(game.bnUpgrade1)) }} (Lv.{{ game.bnUpgrade1 }}) - 花费：{{ formatNumber(getUpgradeCost(game.bnUpgrade1, 90, 1)) }} 拥谫
           </button>
           <button @click="upgradeBn(2)" :disabled="game.bn.lt(getUpgradeCost(game.bnUpgrade2, 900, 2))" class="upgrade-btn">
             <img src="/baixie.png" alt="" class="btn-icon" />
-            升级 2: 拤谪经验获取 ×{{ formatNumber(getUpgrade1Or2Effect(game.bnUpgrade2)) }} (Lv.{{ game.bnUpgrade2 }}) - 花费：{{ formatNumber(getUpgradeCost(game.bnUpgrade2, 900, 2)) }} 拣谩
+            升级 2: 拤谪经验获取 ×{{ formatNumber(getUpgrade1Or2Effect(game.bnUpgrade2)) }} (Lv.{{ game.bnUpgrade2 }}) - 花费：{{ formatNumber(getUpgradeCost(game.bnUpgrade2, 900, 2)) }} 拥谫
           </button>
           <button @click="upgradeBn(3)" :disabled="game.bn.lt(getUpgradeCost(game.bnUpgrade3, 9000, 3))" class="upgrade-btn">
             <img src="/baixie.png" alt="" class="btn-icon" />
-            升级 3: 拦谬获取 ×{{ formatNumber(getUpgrade3Effect(game.bnUpgrade3)) }} (Lv.{{ game.bnUpgrade3 }}) - 花费：{{ formatNumber(getUpgradeCost(game.bnUpgrade3, 9000, 3)) }} 拣谩
+            升级 3: 拦谬获取 ×{{ formatNumber(getUpgrade3Effect(game.bnUpgrade3)) }} (Lv.{{ game.bnUpgrade3 }}) - 花费：{{ formatNumber(getUpgradeCost(game.bnUpgrade3, 9000, 3)) }} 拥谫
           </button>
           <button @click="upgradeBn(4)" :disabled="game.bn.lt(getUpgradeCost(game.bnUpgrade4, 90000, 4))|| game.bnUpgrade4 >= 9" class="upgrade-btn">
             <img src="/baixie.png" alt="" class="btn-icon" />
-            升级 4: 自动点击速度 ×{{ formatNumber(getUpgrade4Effect(game.bnUpgrade4)) }} (Lv.{{ game.bnUpgrade4 }}/9) - 花费：{{ formatNumber(getUpgradeCost(game.bnUpgrade4, 90000, 4)) }} 拣谩
+            升级 4: 自动点击速度 ×{{ formatNumber(getUpgrade4Effect(game.bnUpgrade4)) }} (Lv.{{ game.bnUpgrade4 }}/9) - 花费：{{ formatNumber(getUpgradeCost(game.bnUpgrade4, 90000, 4)) }} 拥谫
           </button>
         </div>
         <div class="upgrades" v-if="game.bm >= 120 || game.bo.gt(0)">
