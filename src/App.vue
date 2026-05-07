@@ -187,7 +187,7 @@ const getBcClickMultiplier = (): Decimal => {
 }
 
 const getBdClickMultiplier = (): Decimal => {
-  return D(game.value.bl ** 4 / 2.56e8).mul(getUpgrade1Or2Effect(game.value.bcUpgrade2)).mul(getUpgrade1Or2Effect(game.value.bgUpgrade2)).mul(getUpgrade1Or2Effect(game.value.bhUpgrade2)).mul(getUpgrade1Or2Effect(game.value.biUpgrade2)).mul(getLevelBonus(game.value.bm))
+  return D(game.value.bl ** 4 / 2.56e8).max(100).mul(getUpgrade1Or2Effect(game.value.bcUpgrade2)).mul(getUpgrade1Or2Effect(game.value.bgUpgrade2)).mul(getUpgrade1Or2Effect(game.value.bhUpgrade2)).mul(getUpgrade1Or2Effect(game.value.biUpgrade2)).mul(getLevelBonus(game.value.bm))
 }
 
 const getBjClickMultiplier = (): Decimal => {
@@ -195,7 +195,7 @@ const getBjClickMultiplier = (): Decimal => {
 }
 
 const getBkClickMultiplier = (): Decimal => {
-  return D(game.value.bf ** 4 / 2.56e8).mul(getUpgrade1Or2Effect(game.value.bjUpgrade2)).mul(getUpgrade1Or2Effect(game.value.bnUpgrade2)).mul(getUpgrade1Or2Effect(game.value.boUpgrade2)).mul(getUpgrade1Or2Effect(game.value.bpUpgrade2)).mul(getLevelBonus(game.value.bs))
+  return D(game.value.bf ** 4 / 2.56e8).max(100).mul(getUpgrade1Or2Effect(game.value.bjUpgrade2)).mul(getUpgrade1Or2Effect(game.value.bnUpgrade2)).mul(getUpgrade1Or2Effect(game.value.boUpgrade2)).mul(getUpgrade1Or2Effect(game.value.bpUpgrade2)).mul(getLevelBonus(game.value.bs))
 }
 
 const getBqClickMultiplier = (): Decimal => {
@@ -203,7 +203,7 @@ const getBqClickMultiplier = (): Decimal => {
 }
 
 const getBrClickMultiplier = (): Decimal => {
-  return D(game.value.bm ** 4 / 2.56e8).mul(getUpgrade1Or2Effect(game.value.bqUpgrade2)).mul(getUpgrade1Or2Effect(game.value.btUpgrade2)).mul(getUpgrade1Or2Effect(game.value.buUpgrade2)).mul(getUpgrade1Or2Effect(game.value.bvUpgrade2))
+  return D(game.value.bm ** 4 / 2.56e8).max(100).mul(getUpgrade1Or2Effect(game.value.bqUpgrade2)).mul(getUpgrade1Or2Effect(game.value.btUpgrade2)).mul(getUpgrade1Or2Effect(game.value.buUpgrade2)).mul(getUpgrade1Or2Effect(game.value.bvUpgrade2))
 }
 
 const autoUnlocked = (i: number): boolean => {
