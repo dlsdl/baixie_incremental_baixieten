@@ -163,7 +163,7 @@ const getBqResetReward = (): Decimal => game.value.bm < 400 ? D(100) : D(game.va
 const getBtResetReward = (): Decimal => game.value.bs < 40 ? D(0) : D(game.value.bs / 10).mul(Decimal.pow(1.04, game.value.bs - 40)).mul(getUpgrade3Effect(game.value.bqUpgrade3)).mul(getBwBonus())
 const getBuResetReward = (): Decimal => game.value.bs < 120 ? D(0) : D(game.value.bs / 10).mul(Decimal.pow(1.03, game.value.bs - 120)).mul(getUpgrade3Effect(game.value.btUpgrade3)).mul(getBwBonus())
 const getBvResetReward = (): Decimal => game.value.bs < 240 ? D(0) : D(game.value.bs / 10).mul(Decimal.pow(1.02, game.value.bs - 240)).mul(getUpgrade3Effect(game.value.buUpgrade3)).mul(getBwBonus())
-const getBwResetReward = (): Decimal => game.value.bs < 400 ? D(0) : D(game.value.bs / 100).mul(Decimal.pow(1.01, game.value.bs - 400)).mul(getUpgrade3Effect(game.value.bvUpgrade3))
+const getBwResetReward = (): Decimal => game.value.bs < 400 ? D(0) : D(game.value.bs / 100).mul(getUpgrade3Effect(game.value.bvUpgrade3))
 
 const checkUnlocks = () => {
   if (game.value.bl >= 400) game.value.isBcUnlocked = true
