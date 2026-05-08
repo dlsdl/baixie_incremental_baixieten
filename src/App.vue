@@ -377,13 +377,13 @@ const autoClickBx = () => {
 
 const autoGetResetResources = () => {
   if (game.value.bxAuto2Unlocked) {
-    game.value.by = D(game.value.by.add(getByResetReward().div(100)))
+    game.value.by = D(game.value.by.add(getByResetReward().div(10)))
   }
   if (game.value.bxAuto3Unlocked) {
-    game.value.bz = D(game.value.bz.add(getBzResetReward().div(100)))
+    game.value.bz = D(game.value.bz.add(getBzResetReward().div(10)))
   }
   if (game.value.bxAuto4Unlocked) {
-    game.value.ba = D(game.value.ba.add(getBaResetReward().div(100)))
+    game.value.ba = D(game.value.ba.add(getBaResetReward().div(10)))
   }
 }
 
@@ -661,17 +661,17 @@ const upgradeBcAuto = (autoIndex: number) => {
 
 const autoGetBcResetResources = () => {
   if (game.value.bcAuto1Unlocked) {
-    game.value.bc = D(game.value.bc.add(getBcClickMultiplier().div(100)))
-    game.value.bd = D(game.value.bd.add(getBdClickMultiplier().div(100)))
+    game.value.bc = D(game.value.bc.add(getBcClickMultiplier().div(10)))
+    game.value.bd = D(game.value.bd.add(getBdClickMultiplier().div(10)))
   }
   if (game.value.bcAuto2Unlocked) {
-    game.value.bg = D(game.value.bg.add(getBgResetReward().div(100)))
+    game.value.bg = D(game.value.bg.add(getBgResetReward().div(10)))
   }
   if (game.value.bcAuto3Unlocked) {
-    game.value.bh = D(game.value.bh.add(getBhResetReward().div(100)))
+    game.value.bh = D(game.value.bh.add(getBhResetReward().div(10)))
   }
   if (game.value.bcAuto4Unlocked) {
-    game.value.bi = D(game.value.bi.add(getBiResetReward().div(100)))
+    game.value.bi = D(game.value.bi.add(getBiResetReward().div(10)))
   }
 }
 
@@ -951,17 +951,17 @@ const upgradeBjAuto = (autoIndex: number) => {
 
 const autoGetBjResetResources = () => {
   if (game.value.bjAuto1Unlocked) {
-    game.value.bj = D(game.value.bj.add(getBjClickMultiplier().div(100)))
-    game.value.bk = D(game.value.bk.add(getBkClickMultiplier().div(100)))
+    game.value.bj = D(game.value.bj.add(getBjClickMultiplier().div(10)))
+    game.value.bk = D(game.value.bk.add(getBkClickMultiplier().div(10)))
   }
   if (game.value.bjAuto2Unlocked) {
-    game.value.bn = D(game.value.bn.add(getBnResetReward().div(100)))
+    game.value.bn = D(game.value.bn.add(getBnResetReward().div(10)))
   }
   if (game.value.bjAuto3Unlocked) {
-    game.value.bo = D(game.value.bo.add(getBoResetReward().div(100)))
+    game.value.bo = D(game.value.bo.add(getBoResetReward().div(10)))
   }
   if (game.value.bjAuto4Unlocked) {
-    game.value.bp = D(game.value.bp.add(getBpResetReward().div(100)))
+    game.value.bp = D(game.value.bp.add(getBpResetReward().div(10)))
   }
 }
 
@@ -1261,17 +1261,17 @@ const upgradeBqAuto = (autoIndex: number) => {
 
 const autoGetBqResetResources = () => {
   if (game.value.bqAuto1Unlocked) {
-    game.value.bq = D(game.value.bq.add(getBqClickMultiplier().div(100)))
-    game.value.br = D(game.value.br.add(getBrClickMultiplier().div(100)))
+    game.value.bq = D(game.value.bq.add(getBqClickMultiplier().div(10)))
+    game.value.br = D(game.value.br.add(getBrClickMultiplier().div(10)))
   }
   if (game.value.bqAuto2Unlocked) {
-    game.value.bt = D(game.value.bt.add(getBtResetReward().div(100)))
+    game.value.bt = D(game.value.bt.add(getBtResetReward().div(10)))
   }
   if (game.value.bqAuto3Unlocked) {
-    game.value.bu = D(game.value.bu.add(getBuResetReward().div(100)))
+    game.value.bu = D(game.value.bu.add(getBuResetReward().div(10)))
   }
   if (game.value.bqAuto4Unlocked) {
-    game.value.bv = D(game.value.bv.add(getBvResetReward().div(100)))
+    game.value.bv = D(game.value.bv.add(getBvResetReward().div(10)))
   }
 }
 
@@ -1667,9 +1667,9 @@ watch(() => game.value.bx, () => {
               <img src="/baixie.png" alt="" class="btn-icon" /><div class="auto-title">{{ autoUnlocked(i) ? `拜谢自动化${i} 已解锁` : `拜谢自动化${i}` }}</div>
               <div class="auto-desc">
                 <span v-if="i===1">每秒自动点击拜谢一次按钮</span>
-                <span v-else-if="i===2">每秒自动获得10%重置时获得的拝谣</span>
-                <span v-else-if="i===3">每秒自动获得10%重置时获得的拞谤</span>
-                <span v-else-if="i===4">每秒自动获得10%重置时获得的拟谥</span>
+                <span v-else-if="i===2">每秒自动获得重置时获得的拝谣</span>
+                <span v-else-if="i===3">每秒自动获得重置时获得的拞谤</span>
+                <span v-else-if="i===4">每秒自动获得重置时获得的拟谥</span>
                 <span v-else-if="i===5">自动购买拜谢升级且不消耗拜谢</span>
                 <span v-else-if="i===6">自动购买拝谣升级且不消耗拝谣</span>
                 <span v-else-if="i===7">自动购买拞谤升级且不消耗拞谤</span>
@@ -1798,10 +1798,10 @@ watch(() => game.value.bx, () => {
                 <img src="/baixie.png" alt="" class="btn-icon" />
                 <div class="auto-title">{{ (game as any)[`bcAuto${i}Unlocked`] ? `拠谦自动化${i} 已解锁` : `拠谦自动化${i}` }}</div>
                 <div class="auto-desc">
-                  <span v-if="i===1">每秒自动获得10%重置时获得的拠谦及其经验</span>
-                  <span v-else-if="i===2">每秒自动获得10%重置时获得的拡谧</span>
-                  <span v-else-if="i===3">每秒自动获得10%重置时获得的拢谨</span>
-                  <span v-else-if="i===4">每秒自动获得10%重置时获得的拣谩</span>
+                  <span v-if="i===1">每秒自动获得重置时获得的拠谦及其经验</span>
+                  <span v-else-if="i===2">每秒自动获得重置时获得的拡谧</span>
+                  <span v-else-if="i===3">每秒自动获得重置时获得的拢谨</span>
+                  <span v-else-if="i===4">每秒自动获得重置时获得的拣谩</span>
                   <span v-else-if="i===5">自动购买拠谦升级且不消耗拠谦</span>
                   <span v-else-if="i===6">自动购买拡谧升级且不消耗拡谧</span>
                   <span v-else-if="i===7">自动购买拢谨升级且不消耗拢谨</span>
@@ -1929,10 +1929,10 @@ watch(() => game.value.bx, () => {
                 <img src="/baixie.png" alt="" class="btn-icon" />
                 <div class="auto-title">{{ (game as any)[`bjAuto${i}Unlocked`] ? `自动化${i} 已解锁` : `解锁自动化${i}` }}</div>
                 <div class="auto-desc">
-                  <span v-if="i===1">每秒自动获得10%重置时获得的拤谪及其经验</span>
-                  <span v-else-if="i===2">每秒自动获得10%重置时获得的拥谫</span>
-                  <span v-else-if="i===3">每秒自动获得10%重置时获得的拦谬</span>
-                  <span v-else-if="i===4">每秒自动获得10%重置时获得的拧谭</span>
+                  <span v-if="i===1">每秒自动获得重置时获得的拠谦及其经验</span>
+                  <span v-else-if="i===2">每秒自动获得重置时获得的拥谫</span>
+                  <span v-else-if="i===3">每秒自动获得重置时获得的拦谬</span>
+                  <span v-else-if="i===4">每秒自动获得重置时获得的拧谭</span>
                   <span v-else-if="i===5">自动购买拤谪升级且不消耗拤谪</span>
                   <span v-else-if="i===6">自动购买拥谫升级且不消耗拥谫</span>
                   <span v-else-if="i===7">自动购买拦谬升级且不消耗拦谬</span>
@@ -2060,10 +2060,10 @@ watch(() => game.value.bx, () => {
                 <img src="/baixie.png" alt="" class="btn-icon" />
                 <div class="auto-title">{{ (game as any)[`bqAuto${i}Unlocked`] ? `拨谮自动化${i} 已解锁` : `拨谮自动化${i}` }}</div>
                 <div class="auto-desc">
-                  <span v-if="i===1">每秒自动获得10%重置时获得的拨谮及其经验</span>
-                  <span v-else-if="i===2">每秒自动获得10%重置时获得的择谯</span>
-                  <span v-else-if="i===3">每秒自动获得10%重置时获得的拪谰</span>
-                  <span v-else-if="i===4">每秒自动获得10%重置时获得的拫谱</span>
+                  <span v-if="i===1">每秒自动获得重置时获得的拨谮及其经验</span>
+                  <span v-else-if="i===2">每秒自动获得重置时获得的择谯</span>
+                  <span v-else-if="i===3">每秒自动获得重置时获得的拪谰</span>
+                  <span v-else-if="i===4">每秒自动获得重置时获得的拫谱</span>
                   <span v-else-if="i===5">自动购买拨谮升级且不消耗拨谮</span>
                   <span v-else-if="i===6">自动购买择谯升级且不消耗择谯</span>
                   <span v-else-if="i===7">自动购买拪谰升级且不消耗拪谰</span>
