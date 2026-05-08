@@ -148,17 +148,17 @@ const getLevelBonus = (level: number): Decimal => {
 const getByResetReward = (): Decimal => game.value.bl < 40 ? D(0) : D(game.value.bl / 10).mul(Decimal.pow(1.04, game.value.bl - 40)).mul(getUpgrade3Effect(game.value.bxUpgrade3)).mul(getLevelBonus(game.value.bf)).mul(getBwBonus())
 const getBzResetReward = (): Decimal => game.value.bl < 120 ? D(0) : D(game.value.bl / 10).mul(Decimal.pow(1.03, game.value.bl - 120)).mul(getUpgrade3Effect(game.value.byUpgrade3)).mul(getLevelBonus(game.value.bf)).mul(getBwBonus())
 const getBaResetReward = (): Decimal => game.value.bl < 240 ? D(0) : D(game.value.bl / 10).mul(Decimal.pow(1.02, game.value.bl - 240)).mul(getUpgrade3Effect(game.value.bzUpgrade3)).mul(getLevelBonus(game.value.bf)).mul(getBwBonus())
-const getBcResetReward = (): Decimal => game.value.bl < 400 ? D(1) : D(game.value.bl ** 4 / 2.56e8).mul(getUpgrade3Effect(game.value.baUpgrade3)).mul(getLevelBonus(game.value.bm)).mul(getBwBonus())
+const getBcResetReward = (): Decimal => game.value.bl < 400 ? D(100) : D(game.value.bl ** 4 / 2.56e8).mul(getUpgrade3Effect(game.value.baUpgrade3)).mul(getLevelBonus(game.value.bm)).mul(getBwBonus())
 
 const getBgResetReward = (): Decimal => game.value.bf < 40 ? D(0) : D(game.value.bf / 10).mul(Decimal.pow(1.04, game.value.bf - 40)).mul(getUpgrade3Effect(game.value.bcUpgrade3)).mul(getLevelBonus(game.value.bm)).mul(getBwBonus())
 const getBhResetReward = (): Decimal => game.value.bf < 120 ? D(0) : D(game.value.bf / 10).mul(Decimal.pow(1.03, game.value.bf - 120)).mul(getUpgrade3Effect(game.value.bgUpgrade3)).mul(getLevelBonus(game.value.bm)).mul(getBwBonus())
 const getBiResetReward = (): Decimal => game.value.bf < 240 ? D(0) : D(game.value.bf / 10).mul(Decimal.pow(1.02, game.value.bf - 240)).mul(getUpgrade3Effect(game.value.bhUpgrade3)).mul(getLevelBonus(game.value.bm)).mul(getBwBonus())
-const getBjResetReward = (): Decimal => game.value.bf < 400 ? D(1) : D(game.value.bf ** 4 / 2.56e8).mul(getUpgrade3Effect(game.value.biUpgrade3)).mul(getLevelBonus(game.value.bs)).mul(getBwBonus())
+const getBjResetReward = (): Decimal => game.value.bf < 400 ? D(100) : D(game.value.bf ** 4 / 2.56e8).mul(getUpgrade3Effect(game.value.biUpgrade3)).mul(getLevelBonus(game.value.bs)).mul(getBwBonus())
 
 const getBnResetReward = (): Decimal => game.value.bm < 40 ? D(0) : D(game.value.bm / 10).mul(Decimal.pow(1.04, game.value.bm - 40)).mul(getUpgrade3Effect(game.value.bjUpgrade3)).mul(getLevelBonus(game.value.bs)).mul(getBwBonus())
 const getBoResetReward = (): Decimal => game.value.bm < 120 ? D(0) : D(game.value.bm / 10).mul(Decimal.pow(1.03, game.value.bm - 120)).mul(getUpgrade3Effect(game.value.bnUpgrade3)).mul(getLevelBonus(game.value.bs)).mul(getBwBonus())
 const getBpResetReward = (): Decimal => game.value.bm < 240 ? D(0) : D(game.value.bm / 10).mul(Decimal.pow(1.02, game.value.bm - 240)).mul(getUpgrade3Effect(game.value.boUpgrade3)).mul(getLevelBonus(game.value.bs)).mul(getBwBonus())
-const getBqResetReward = (): Decimal => game.value.bm < 400 ? D(1) : D(game.value.bm ** 4 / 2.56e8).mul(getUpgrade3Effect(game.value.bpUpgrade3)).mul(getBwBonus())
+const getBqResetReward = (): Decimal => game.value.bm < 400 ? D(100) : D(game.value.bm ** 4 / 2.56e8).mul(getUpgrade3Effect(game.value.bpUpgrade3)).mul(getBwBonus())
 
 const getBtResetReward = (): Decimal => game.value.bs < 40 ? D(0) : D(game.value.bs / 10).mul(Decimal.pow(1.04, game.value.bs - 40)).mul(getUpgrade3Effect(game.value.bqUpgrade3)).mul(getBwBonus())
 const getBuResetReward = (): Decimal => game.value.bs < 120 ? D(0) : D(game.value.bs / 10).mul(Decimal.pow(1.03, game.value.bs - 120)).mul(getUpgrade3Effect(game.value.btUpgrade3)).mul(getBwBonus())
@@ -377,13 +377,13 @@ const autoClickBx = () => {
 
 const autoGetResetResources = () => {
   if (game.value.bxAuto2Unlocked) {
-    game.value.by = D(game.value.by.add(getByResetReward().mul(getBwBonus()).div(100)))
+    game.value.by = D(game.value.by.add(getByResetReward().div(100)))
   }
   if (game.value.bxAuto3Unlocked) {
-    game.value.bz = D(game.value.bz.add(getBzResetReward().mul(getBwBonus()).div(100)))
+    game.value.bz = D(game.value.bz.add(getBzResetReward().div(100)))
   }
   if (game.value.bxAuto4Unlocked) {
-    game.value.ba = D(game.value.ba.add(getBaResetReward().mul(getBwBonus()).div(100)))
+    game.value.ba = D(game.value.ba.add(getBaResetReward().div(100)))
   }
 }
 
@@ -661,17 +661,17 @@ const upgradeBcAuto = (autoIndex: number) => {
 
 const autoGetBcResetResources = () => {
   if (game.value.bcAuto1Unlocked) {
-    game.value.bc = D(game.value.bc.add(getBcClickMultiplier().div(10)))
-    game.value.bd = D(game.value.bd.add(getBdClickMultiplier().div(10)))
+    game.value.bc = D(game.value.bc.add(getBcClickMultiplier().div(100)))
+    game.value.bd = D(game.value.bd.add(getBdClickMultiplier().div(100)))
   }
   if (game.value.bcAuto2Unlocked) {
-    game.value.bg = D(game.value.bg.add(getBgResetReward().div(10)))
+    game.value.bg = D(game.value.bg.add(getBgResetReward().div(100)))
   }
   if (game.value.bcAuto3Unlocked) {
-    game.value.bh = D(game.value.bh.add(getBhResetReward().div(10)))
+    game.value.bh = D(game.value.bh.add(getBhResetReward().div(100)))
   }
   if (game.value.bcAuto4Unlocked) {
-    game.value.bi = D(game.value.bi.add(getBiResetReward().div(10)))
+    game.value.bi = D(game.value.bi.add(getBiResetReward().div(100)))
   }
 }
 
@@ -757,10 +757,8 @@ const autoBuyBcUpgrades = () => {
 // 拤谪层级计算
 const clickBj = (clickMultiplier: number = 1) => {
   if (game.value.bf < 400) return
-  const bjMultiplier = D(game.value.bj.add(getBjClickMultiplier().mul(clickMultiplier)))
-  const bkMultiplier = D(game.value.bk.add(getBkClickMultiplier().mul(clickMultiplier)))
-  game.value.bj = D(game.value.bj.add(bjMultiplier.mul(clickMultiplier)))
-  game.value.bk = D(game.value.bk.add(bkMultiplier.mul(clickMultiplier)))
+  game.value.bj = D(game.value.bj.add(getBjClickMultiplier().mul(clickMultiplier)))
+  game.value.bk = D(game.value.bk.add(getBkClickMultiplier().mul(clickMultiplier)))
   game.value.bx = D(0); game.value.be = D(0); game.value.bl = 1; game.value.by = D(0); game.value.bz = D(0); game.value.ba = D(0)
   game.value.bxUpgrade1 = 0; game.value.bxUpgrade2 = 0; game.value.bxUpgrade3 = 0; game.value.bxUpgrade4 = 0
   game.value.byUpgrade1 = 0; game.value.byUpgrade2 = 0; game.value.byUpgrade3 = 0; game.value.byUpgrade4 = 0
@@ -953,17 +951,17 @@ const upgradeBjAuto = (autoIndex: number) => {
 
 const autoGetBjResetResources = () => {
   if (game.value.bjAuto1Unlocked) {
-    game.value.bj = D(game.value.bj.add(getBjClickMultiplier().div(10)))
-    game.value.bk = D(game.value.bk.add(getBkClickMultiplier().div(10)))
+    game.value.bj = D(game.value.bj.add(getBjClickMultiplier().div(100)))
+    game.value.bk = D(game.value.bk.add(getBkClickMultiplier().div(100)))
   }
   if (game.value.bjAuto2Unlocked) {
-    game.value.bn = D(game.value.bn.add(getBnResetReward().div(10)))
+    game.value.bn = D(game.value.bn.add(getBnResetReward().div(100)))
   }
   if (game.value.bjAuto3Unlocked) {
-    game.value.bo = D(game.value.bo.add(getBoResetReward().div(10)))
+    game.value.bo = D(game.value.bo.add(getBoResetReward().div(100)))
   }
   if (game.value.bjAuto4Unlocked) {
-    game.value.bp = D(game.value.bp.add(getBpResetReward().div(10)))
+    game.value.bp = D(game.value.bp.add(getBpResetReward().div(100)))
   }
 }
 
@@ -1049,10 +1047,8 @@ const autoBuyBjUpgrades = () => {
 // 拨谮层级计算
 const clickBq = (clickMultiplier: number = 1) => {
   if (game.value.bm < 400) return
-  const bqMultiplier = D(game.value.bq.add(getBqClickMultiplier().mul(clickMultiplier)))
-  const brMultiplier = D(game.value.br.add(getBrClickMultiplier().mul(clickMultiplier)))
-  game.value.bq = D(game.value.bq.add(bqMultiplier.mul(clickMultiplier)))
-  game.value.br = D(game.value.br.add(brMultiplier.mul(clickMultiplier)))
+  game.value.bq = D(game.value.bq.add(getBqClickMultiplier().mul(clickMultiplier)))
+  game.value.br = D(game.value.br.add(getBrClickMultiplier().mul(clickMultiplier)))
   game.value.bx = D(0); game.value.be = D(0); game.value.bl = 1; game.value.by = D(0); game.value.bz = D(0); game.value.ba = D(0)
   game.value.bxUpgrade1 = 0; game.value.bxUpgrade2 = 0; game.value.bxUpgrade3 = 0; game.value.bxUpgrade4 = 0
   game.value.byUpgrade1 = 0; game.value.byUpgrade2 = 0; game.value.byUpgrade3 = 0; game.value.byUpgrade4 = 0
@@ -1265,17 +1261,17 @@ const upgradeBqAuto = (autoIndex: number) => {
 
 const autoGetBqResetResources = () => {
   if (game.value.bqAuto1Unlocked) {
-    game.value.bq = D(game.value.bq.add(getBqClickMultiplier().div(10)))
-    game.value.br = D(game.value.br.add(getBrClickMultiplier().div(10)))
+    game.value.bq = D(game.value.bq.add(getBqClickMultiplier().div(100)))
+    game.value.br = D(game.value.br.add(getBrClickMultiplier().div(100)))
   }
   if (game.value.bqAuto2Unlocked) {
-    game.value.bt = D(game.value.bt.add(getBtResetReward().div(10)))
+    game.value.bt = D(game.value.bt.add(getBtResetReward().div(100)))
   }
   if (game.value.bqAuto3Unlocked) {
-    game.value.bu = D(game.value.bu.add(getBuResetReward().div(10)))
+    game.value.bu = D(game.value.bu.add(getBuResetReward().div(100)))
   }
   if (game.value.bqAuto4Unlocked) {
-    game.value.bv = D(game.value.bv.add(getBvResetReward().div(10)))
+    game.value.bv = D(game.value.bv.add(getBvResetReward().div(100)))
   }
 }
 
