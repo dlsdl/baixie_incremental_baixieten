@@ -187,7 +187,7 @@ const getBcClickMultiplier = (): Decimal => {
 }
 
 const getBdClickMultiplier = (): Decimal => {
-  return D(100).mul(getUpgrade1Or2Effect(game.value.bcUpgrade2)).mul(getUpgrade1Or2Effect(game.value.bgUpgrade2)).mul(getUpgrade1Or2Effect(game.value.bhUpgrade2)).mul(getUpgrade1Or2Effect(game.value.biUpgrade2)).mul(getLevelBonus(game.value.bm))
+  return D(100).mul(getBwBonus()).mul(getUpgrade1Or2Effect(game.value.bcUpgrade2)).mul(getUpgrade1Or2Effect(game.value.bgUpgrade2)).mul(getUpgrade1Or2Effect(game.value.bhUpgrade2)).mul(getUpgrade1Or2Effect(game.value.biUpgrade2)).mul(getLevelBonus(game.value.bm))
 }
 
 const getBjClickMultiplier = (): Decimal => {
@@ -195,7 +195,7 @@ const getBjClickMultiplier = (): Decimal => {
 }
 
 const getBkClickMultiplier = (): Decimal => {
-  return D(100).mul(getUpgrade1Or2Effect(game.value.bjUpgrade2)).mul(getUpgrade1Or2Effect(game.value.bnUpgrade2)).mul(getUpgrade1Or2Effect(game.value.boUpgrade2)).mul(getUpgrade1Or2Effect(game.value.bpUpgrade2)).mul(getLevelBonus(game.value.bs))
+  return D(100).mul(getBwBonus()).mul(getUpgrade1Or2Effect(game.value.bjUpgrade2)).mul(getUpgrade1Or2Effect(game.value.bnUpgrade2)).mul(getUpgrade1Or2Effect(game.value.boUpgrade2)).mul(getUpgrade1Or2Effect(game.value.bpUpgrade2)).mul(getLevelBonus(game.value.bs))
 }
 
 const getBqClickMultiplier = (): Decimal => {
@@ -203,7 +203,7 @@ const getBqClickMultiplier = (): Decimal => {
 }
 
 const getBrClickMultiplier = (): Decimal => {
-  return D(100).mul(getUpgrade1Or2Effect(game.value.bqUpgrade2)).mul(getUpgrade1Or2Effect(game.value.btUpgrade2)).mul(getUpgrade1Or2Effect(game.value.buUpgrade2)).mul(getUpgrade1Or2Effect(game.value.bvUpgrade2))
+  return D(100).mul(getBwBonus()).mul(getUpgrade1Or2Effect(game.value.bqUpgrade2)).mul(getUpgrade1Or2Effect(game.value.btUpgrade2)).mul(getUpgrade1Or2Effect(game.value.buUpgrade2)).mul(getUpgrade1Or2Effect(game.value.bvUpgrade2))
 }
 
 const autoUnlocked = (i: number): boolean => {
@@ -1457,16 +1457,111 @@ const resetGod = () => {
   game.value.bj = D(0); game.value.bk = D(0); game.value.bm = 1; game.value.bn = D(0); game.value.bo = D(0); game.value.bp = D(0)
   game.value.bq = D(0); game.value.br = D(0); game.value.bs = 1; game.value.bt = D(0); game.value.bu = D(0); game.value.bv = D(0)
   Object.keys(game.value).forEach(key => { if (key.includes('Upgrade')) (game.value[key as keyof GameState] as unknown as number) = 0 })
+  if(game.value.bw.lt(1000)) {
   game.value.bxAuto1Unlocked = false; game.value.bxAuto2Unlocked = false; game.value.bxAuto3Unlocked = false; game.value.bxAuto4Unlocked = false
   game.value.bxAuto5Unlocked = false; game.value.bxAuto6Unlocked = false; game.value.bxAuto7Unlocked = false; game.value.bxAuto8Unlocked = false
+  }
+  if(game.value.bw.lt(1e6)) {
   game.value.bcAuto1Unlocked = false; game.value.bcAuto2Unlocked = false; game.value.bcAuto3Unlocked = false; game.value.bcAuto4Unlocked = false
   game.value.bcAuto5Unlocked = false; game.value.bcAuto6Unlocked = false; game.value.bcAuto7Unlocked = false; game.value.bcAuto8Unlocked = false
+  }
+  if(game.value.bw.lt(1e9)) {
   game.value.bjAuto1Unlocked = false; game.value.bjAuto2Unlocked = false; game.value.bjAuto3Unlocked = false; game.value.bjAuto4Unlocked = false
   game.value.bjAuto5Unlocked = false; game.value.bjAuto6Unlocked = false; game.value.bjAuto7Unlocked = false; game.value.bjAuto8Unlocked = false
+  }
+  if(game.value.bw.lt(1e12)) {
   game.value.bqAuto1Unlocked = false; game.value.bqAuto2Unlocked = false; game.value.bqAuto3Unlocked = false; game.value.bqAuto4Unlocked = false
   game.value.bqAuto5Unlocked = false; game.value.bqAuto6Unlocked = false; game.value.bqAuto7Unlocked = false; game.value.bqAuto8Unlocked = false
+  }
+}
+/*
+const devAddResource = ref('')
+const devAddAmount = ref('1e10')
+const devSetLevel = ref('')
+const devLevelAmount = ref(100)
+
+const devResourceOptions = [
+  { key: 'bx', name: '拜谢' }, { key: 'be', name: '经验' }, { key: 'by', name: '拝谣' },
+  { key: 'bz', name: '拞谤' }, { key: 'ba', name: '拟谥' }, { key: 'bc', name: '拠谦' },
+  { key: 'bd', name: '拠谦经验' }, { key: 'bg', name: '拡谧' }, { key: 'bh', name: '拢谨' },
+  { key: 'bi', name: '拣谩' }, { key: 'bj', name: '拤谪' }, { key: 'bk', name: '拤谪经验' },
+  { key: 'bn', name: '拥谫' }, { key: 'bo', name: '拦谬' }, { key: 'bp', name: '拧谭' },
+  { key: 'bq', name: '拨谮' }, { key: 'br', name: '拨谮经验' }, { key: 'bt', name: '拨谮资源1' },
+  { key: 'bu', name: '拨谮资源2' }, { key: 'bv', name: '拨谮资源3' }, { key: 'bw', name: '拜谢之神' }
+]
+
+const devLevelOptions = [
+  { key: 'bl', name: '拜谢等级' }, { key: 'bf', name: '拠谦等级' },
+  { key: 'bm', name: '拤谪等级' }, { key: 'bs', name: '拨谮等级' }
+]
+
+const devAddResourceAction = () => {
+  if (!devAddResource.value) return
+  const key = devAddResource.value as keyof GameState
+  const amount = D(devAddAmount.value)
+  if (DECIMAL_FIELDS.has(key)) {
+    (game.value[key] as Decimal) = D((game.value[key] as Decimal).add(amount))
+  }
 }
 
+const devSetLevelAction = () => {
+  if (!devSetLevel.value) return
+  const key = devSetLevel.value as keyof GameState
+  const amount = devLevelAmount.value
+  if (key === 'bl') game.value.bl = amount
+  else if (key === 'bf') game.value.bf = amount
+  else if (key === 'bm') game.value.bm = amount
+  else if (key === 'bs') game.value.bs = amount
+  checkUnlocks()
+}
+
+const devUnlockAll = () => {
+  game.value.isBcUnlocked = true
+  game.value.isBjUnlocked = true
+  game.value.isBqUnlocked = true
+  game.value.isBwUnlocked = true
+}
+
+const devUnlockAllAuto = () => {
+  const autoKeys = ['bxAuto', 'bcAuto', 'bjAuto', 'bqAuto']
+  autoKeys.forEach(prefix => {
+    for (let i = 1; i <= 8; i++) {
+      const key = `${prefix}${i}Unlocked` as keyof GameState
+      ;(game.value[key] as boolean) = true
+    }
+  })
+}
+
+const devMaxUpgrades = () => {
+  const upgrades = ['bxUpgrade', 'byUpgrade', 'bzUpgrade', 'baUpgrade', 'bcUpgrade', 'bgUpgrade', 'bhUpgrade', 'biUpgrade', 'bjUpgrade', 'bnUpgrade', 'boUpgrade', 'bpUpgrade', 'bqUpgrade', 'btUpgrade', 'buUpgrade', 'bvUpgrade']
+  upgrades.forEach(prefix => {
+    for (let i = 1; i <= 4; i++) {
+      const key = `${prefix}${i}` as keyof GameState
+      if (i === 4) (game.value[key] as number) = 9
+      else (game.value[key] as number) = 1000
+    }
+  })
+}
+
+const devSetTime = (seconds: number) => {
+  const multiplier = seconds / 0.1
+  for (let i = 0; i < multiplier; i++) {
+    if (game.value.bxAuto1Unlocked) autoClickBx()
+    autoGetResetResources()
+    autoGetBcResetResources()
+    autoGetBjResetResources()
+    autoGetBqResetResources()
+    autoBuyUpgrades()
+    autoBuyBcUpgrades()
+    autoBuyBjUpgrades()
+    autoBuyBqUpgrades()
+    autoUpgradeBl()
+    autoUpgradeBf()
+    autoUpgradeBm()
+    autoUpgradeBs()
+  }
+}
+*/
 onMounted(() => {
   loadGame()
   startGameLoop()
@@ -2084,7 +2179,7 @@ watch(() => game.value.bx, () => {
           <h2>拜谢之神</h2>
           <div class="god-content">
             <span class="bonus"><img src="/baixie.png" alt="" class="btn-icon" />。</span>
-            <span class="bonus">不过，我们不希望每升一个层级都会重置之前层级除自动化外的所有内容。</span>
+            <span class="bonus">不过，我们并不希望每升一个层级都会重置之前层级除自动化外的所有内容。</span>
             <span class="bonus">不过你可以拜谢拜谢之神，它将重置之前所有东西。</span>
             <span class="bonus">并给之前所有东西提供加成。</span>
             <img src="/baixie.png" alt="" class="god-img" />
@@ -2095,6 +2190,10 @@ watch(() => game.value.bx, () => {
             <button @click="resetGod" class="god-reset-btn"><img src="/baixie.png" alt="" class="btn-icon" />重置之前所有东西，获得{{ formatNumber(getBwResetReward()) }}拜谢之神</button>
           </div>
         </div>
+        <span style="color: rgb(255, 0, 0)">到达1000拜谢之神后，拜谢之神不再重置拜谢自动化。</span><br />
+        <span style="color: rgb(121, 0, 0)">到达1e6拜谢之神后，拜谢之神不再重置拠谦自动化。</span><br />
+        <span style="color: rgb(122, 0, 86)">到达1e9拜谢之神后，拜谢之神不再重置拤谪自动化。</span><br />
+        <span style="color: rgb(255, 94, 0)">到达1e12拜谢之神后，拜谢之神不再重置拨谮自动化。</span><br />
       </div>
       
       <!-- 存档系统标签页 -->
@@ -2105,10 +2204,49 @@ watch(() => game.value.bx, () => {
             <button @click="exportSave" class="save-btn"><img src="/baixie.png" alt="" class="btn-icon" />导出存档</button>
             <label class="save-btn"><img src="/baixie.png" alt="" class="btn-icon" />导入存档<input type="file" @change="importSave" accept=".txt" style="display: none" /></label>
             <button @click="hardReset" class="reset-btn danger"><img src="/baixie.png" alt="" class="btn-icon" />硬重置</button>
-            <!--a href="https://www.bilibili.com/video/BV1GJ411x7h7" target="_blank" class="save-btn completion-btn"><img src="/baixie.png" alt="" class="btn-icon" />通关这个游戏</a-->
-          <span class="bonus">游戏说明：所有的升级1和2每10级效果乘以2，每100级效果乘以10。所有的升级3每10级效果乘以1.414，每100级效果乘以3.162。当前层级的等级到达400解锁下一层级。游戏结局：获得9007199254740991？？。</span>
           </div>
+          <span class="bonus">游戏说明：所有的升级1和2每10级效果乘以2，每100级效果乘以10。所有的升级3每10级效果乘以1.414，每100级效果乘以3.162。当前层级的等级到达400解锁下一层级。游戏结局：获得9007199254740991？？。</span>
         </div>
+        
+        <!--div class="section dev-section">
+          <h2>开发者工具</h2>
+          <div class="dev-tools">
+            <div class="dev-row">
+              <h4>添加资源</h4>
+              <select v-model="devAddResource" class="dev-select">
+                <option value="">选择资源</option>
+                <option v-for="opt in devResourceOptions" :key="opt.key" :value="opt.key">{{ opt.name }}</option>
+              </select>
+              <input v-model="devAddAmount" type="text" class="dev-input" placeholder="数量 (如: 1e10)" />
+              <button @click="devAddResourceAction" class="dev-btn">添加</button>
+            </div>
+            
+            <div class="dev-row">
+              <h4>设置等级</h4>
+              <select v-model="devSetLevel" class="dev-select">
+                <option value="">选择等级</option>
+                <option v-for="opt in devLevelOptions" :key="opt.key" :value="opt.key">{{ opt.name }}</option>
+              </select>
+              <input v-model.number="devLevelAmount" type="number" class="dev-input" placeholder="等级" />
+              <button @click="devSetLevelAction" class="dev-btn">设置</button>
+            </div>
+            
+            <div class="dev-row">
+              <h4>快速解锁</h4>
+              <button @click="devUnlockAll" class="dev-btn">解锁所有层级</button>
+              <button @click="devUnlockAllAuto" class="dev-btn">解锁所有自动化</button>
+              <button @click="devMaxUpgrades" class="dev-btn">满级所有升级</button>
+            </div>
+            
+            <div class="dev-row">
+              <h4>模拟时间</h4>
+              <button @click="devSetTime(60)" class="dev-btn">模拟 1 分钟</button>
+              <button @click="devSetTime(600)" class="dev-btn">模拟 10 分钟</button>
+              <button @click="devSetTime(3600)" class="dev-btn">模拟 1 小时</button>
+            </div>
+          </div>
+        </div-->
+
       </div>
     </div>
   </div>
@@ -2390,5 +2528,62 @@ h2 {
 @keyframes spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
+}
+.dev-section {
+  margin-top: 20px;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 15px;
+  padding: 20px;
+  border: 2px solid rgba(255, 100, 100, 0.5);
+}
+.dev-section h2 {
+  color: #ff6666;
+  margin-bottom: 15px;
+}
+.dev-tools {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+.dev-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.dev-row h4 {
+  color: #fff;
+  margin: 0;
+  min-width: 80px;
+}
+.dev-select {
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 2px solid rgba(255, 215, 0, 0.5);
+  background: rgba(255, 255, 255, 0.9);
+  font-size: 14px;
+  min-width: 120px;
+}
+.dev-input {
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 2px solid rgba(255, 215, 0, 0.5);
+  background: rgba(255, 255, 255, 0.9);
+  font-size: 14px;
+  width: 150px;
+}
+.dev-btn {
+  padding: 8px 16px;
+  border-radius: 8px;
+  border: 2px solid #ff6666;
+  background: linear-gradient(135deg, #ff6666 0%, #ff4444 100%);
+  color: #fff;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+.dev-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(255, 100, 100, 0.4);
 }
 </style>
